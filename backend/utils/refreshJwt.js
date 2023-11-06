@@ -4,8 +4,8 @@ const usersModel = require('../models/usersModel');
 const refreshJwt = async function (req, res) {
    const cookies = req.cookies;
 
-   if (!cookies?.jwt) return res.status(401).json({ message: `You are not authorized to access this information` });
-   const refreshToken = cookies.jwt;
+   if (!cookies?.jwtCar) return res.status(401).json({ message: `You are not authorized to access this information` });
+   const refreshToken = cookies.jwtCar;
 
    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, async function (error, decodedInfo) {
       if (error) {
@@ -19,8 +19,7 @@ const refreshJwt = async function (req, res) {
          { email: user.email, username: user.username, id: user._id },
          process.env.ACCESS_TOKEN,
          {
-            expiresIn: '10s',
-            // expiresIn: '1d',
+            expiresIn: '1d',
          }
       );
 

@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 connectDB();
 
 app.use('/user', require('./router/usersRouter'));
+app.use('/offer', require('./router/offerRouter'));
 
 app.use(errorHandler);
 

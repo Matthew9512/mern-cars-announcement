@@ -6,16 +6,18 @@ import ProtectedRoutes from './ui/ProtectedRoutes';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NewAnnouncement from './pages/NewAnnouncement/NewAnnouncement';
+import Offer from './pages/Offer/Offer';
 
 function App() {
    return (
-      <main className='max-w-screen-2xl mx-auto min-h-screen relative'>
+      <main className='max-w-screen-2xl mx-auto min-h-screen relative pb-24'>
          <BrowserRouter>
             <Routes>
                <Route element={<Layout />}>
                   <Route path='/' element={<Home />} />
                   <Route path='/login' element={<Login />} />
                   <Route path='/register' element={<Register />} />
+                  <Route path='/offer/:id' element={<Offer />} />
                   <Route element={<ProtectedRoutes />}>
                      <Route path='/new-announcement' element={<NewAnnouncement />} />
                   </Route>

@@ -7,7 +7,9 @@ function Home() {
       <>
          <Hero />
          <section className='w-[80%] mx-auto'>
-            <h2 className='text-2xl font-semibold'>Cars catalogue</h2>
+            <h2 className='text-2xl font-semibold' id='cars-section'>
+               Cars catalogue
+            </h2>
             <p>Search for your dream car:</p>
             <SearchBar />
             <CarsList />

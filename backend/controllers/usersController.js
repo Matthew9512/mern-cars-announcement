@@ -41,13 +41,13 @@ const login = async function (req, res, next) {
       if (!bcryptComp) return res.status(401).json({ message: `Wrong email or password` });
 
       const accessToken = jwt.sign({ email, username: user.username, id: user._id }, process.env.ACCESS_TOKEN, {
-         expiresIn: '10s',
+         expiresIn: '1d',
       });
       const refreshToken = jwt.sign({ email, username: user.username, id: user._id }, process.env.REFRESH_TOKEN, {
-         expiresIn: '20s',
+         expiresIn: '7d',
       });
 
-      res.cookie('jwt-car', refreshToken, {
+      res.cookie('jwtCar', refreshToken, {
          httpOnly: true,
          secure: true,
          sameSite: 'None',
@@ -60,4 +60,17 @@ const login = async function (req, res, next) {
    }
 };
 
-module.exports = { register, login };
+const getSellerInfo = async function (req, res, next) {
+   try {
+      const { id } = req.params;
+
+      const user = await usersModel.findById(id).select('city telNumber contactPerson');
+
+      res.status(200).json(user);
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+module.exports = { register, login, getSellerInfo };

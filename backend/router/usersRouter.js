@@ -7,5 +7,6 @@ const refreshJwt = require('../utils/refreshJwt');
 router.post('/register', users.register);
 router.post('/login', users.login);
 router.post('/refresh', refreshJwt);
+router.get('/:id', users.getSellerInfo);
 
 module.exports = router;

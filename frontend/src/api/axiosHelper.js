@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import toast from 'react-hot-toast';
 import { axiosCredentials, fetchData } from '../api/fetchData';
 
 axiosCredentials.interceptors.request.use(
@@ -37,7 +38,7 @@ export function removeToken() {
 async function refreshAccessToken() {
    try {
       const res = await fetchData({
-         url: `/users/refresh`,
+         url: `/user/refresh`,
          method: 'POST',
          withCredentials: true,
       });
@@ -46,7 +47,10 @@ async function refreshAccessToken() {
       localStorage.setItem('car-access__token', JSON.stringify(newToken));
       return newToken;
    } catch (error) {
-      window.location = '/';
+      toast.error('Please log in in order to proceed');
+      setTimeout(() => {
+         window.location = '/';
+      }, 1200);
    }
 }
 

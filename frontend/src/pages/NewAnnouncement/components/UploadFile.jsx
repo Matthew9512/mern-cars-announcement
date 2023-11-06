@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import Input from '../../../ui/Input';
 import LoadingButton from '../../../ui/LoadingButton';
 import { useFileUpload } from '../../../utils/firebase';
@@ -6,23 +7,69 @@ import Button from '../../../ui/Button';
 import Select from '../../../ui/Select';
 import UploadedImgs from './UploadedImgs';
 import { brandsArr, carBodyTypesArr, fuelsArr } from '../../../utils/constants';
+import { useAddNewOffer } from '../../../api/useOffer';
+import { jwtDecodeToken } from '../../../api/axiosHelper';
+import { useGetUser } from '../../../api/useAuth';
 
 function UploadFile() {
+   const { mutate, isPending } = useAddNewOffer();
+   const { data: sellerData } = useGetUser();
+   const [files, setFiles] = useState([]);
    const [uploadedImgArr, setUploadedImgArr] = useState([]);
    const { handleFileUpload, filePerc, err, loading } = useFileUpload(setUploadedImgArr);
    const uploadRef = useRef();
 
-   const handleUploads = (e) => {
+   const handleTransmition = (e) => {
       e.preventDefault();
-      const imgs = uploadRef.current.files;
+      const click = e.target;
+
+      if (!click.dataset.transmition) return;
+
+      // take all btns
+      const btns = click.closest('#transmition-wrapper').children;
+      [...btns].forEach((btn) => btn.classList.remove('activeBtnTransmition'));
+
+      click.classList.add('activeBtnTransmition');
+   };
+
+   const lestGo = (e) => {
+      e.preventDefault();
+      if (uploadedImgArr.length >= 11) return toast.error(`You can upload more than 10 images`);
+
+      // transmition type based on active class
+      const transmitionType = document.querySelector('.activeBtnTransmition').textContent.toLowerCase();
+
+      // users id from token
+      const { id } = jwtDecodeToken();
+
+      const form = new FormData(e.currentTarget);
+
+      // stringifyed version of images links array, parse on backend
+      form.append('images', JSON.stringify(uploadedImgArr));
+      form.append('transmitionType', transmitionType);
+      form.append('userId', id);
+
+      const { city, telNumber, contactPerson, ...carData } = Object.fromEntries(form);
+      const sellerData = { city, telNumber, contactPerson };
+
+      // const formData = Object.fromEntries(form);
+      mutate({ carData, sellerData });
+   };
+
+   useEffect(() => {
+      if (!files.length) return;
+
       // invoke uploading fn for every image
-      [...imgs].forEach((img) => {
+      [...files[0]].forEach((img) => {
          handleFileUpload(img);
       });
-   };
-   // flex-center gap-4
+
+      // clear images arr to remove duplicates
+      setFiles([]);
+   }, [files]);
+
    return (
-      <form className='py-16'>
+      <form onSubmit={lestGo} className='py-16'>
          <h1 className='font-semibold text-2xl mx-auto pb-8'>Add New Announcement</h1>
          <div className='flex lg:flex-row flex-col lg:gap-16 gap-8 '>
             <div className='flex flex-col gap-2 w-72'>
@@ -41,6 +88,9 @@ function UploadFile() {
                <Input type='text' placeholder='model' name='model' id='model' />
                <Input
                   inpRef={uploadRef}
+                  onChange={(e) => {
+                     setFiles((prev) => [...prev, e.target.files]);
+                  }}
                   variant='upload'
                   type='file'
                   hidden
@@ -49,37 +99,43 @@ function UploadFile() {
                   placeholder='name'
                />
                <div className='flex-center gap-4 my-4'>
-                  <p
-                     onClick={() => uploadRef.current.click()}
-                     className='underline hover:cursor-pointer hover:opacity-70'
+                  <label>Pick photos (max 6)</label>
+                  <LoadingButton
+                     className='mx-auto'
+                     onClick={(e) => {
+                        e.preventDefault();
+                        uploadRef.current.click();
+                     }}
+                     isLoading={loading}
                   >
-                     Pick photos (max 6)
-                  </p>
-                  <LoadingButton className='mx-auto' onClick={handleUploads} isLoading={loading}>
                      Add photos
                   </LoadingButton>
                </div>
-               <UploadedImgs uploadedImgArr={uploadedImgArr} filePerc={filePerc} />
+               <UploadedImgs
+                  uploadedImgArr={uploadedImgArr}
+                  setUploadedImgArr={setUploadedImgArr}
+                  filePerc={filePerc}
+               />
                <label htmlFor='price'>Price:</label>
-               <Input type='number' placeholder='$' name='price' id='price' />
+               <Input type='number' placeholder='€' name='price' id='price' />
             </div>
             <div className='flex flex-col gap-2 w-72'>
                <label htmlFor='engine capacity'>Engine capacity:</label>
-               <Input type='number' placeholder='cm3' name='engine capacity' />
-               <label htmlFor='horse power'>Engine capacity:</label>
-               <Input type='number' placeholder='HP' name='horse power' id='horse power' />
+               <Input type='number' placeholder='cm3' name='engineCapacity' />
+               <label htmlFor='horse power'>Horse power:</label>
+               <Input type='number' placeholder='HP' name='horsePower' id='horse power' />
                <label htmlFor='year'>Production year:</label>
                <Input type='year' placeholder='year' name='year' id='year' />
                <label htmlFor='fuel'>Fuel:</label>
-               <Select optionsList={fuelsArr} id='fuel' />
+               <Select optionsList={fuelsArr} id='fuel' name='fuel' />
                <label htmlFor='body type'>Body type:</label>
-               <Select optionsList={carBodyTypesArr} id='body type' />
+               <Select optionsList={carBodyTypesArr} id='body type' name='bodyType' />
                <label htmlFor='transmition'>Transmition type:</label>
-               <div className='space-x-6'>
-                  <Button variant='primary' disabled>
-                     Auto
+               <div className='space-x-6 mb-2 mx-auto' id='transmition-wrapper' onClick={handleTransmition}>
+                  <Button variant='primary' data-transmition='automatic'>
+                     Automatic
                   </Button>
-                  <Button variant='primary' disabled>
+                  <Button variant='primary' data-transmition='manual'>
                      Manual
                   </Button>
                </div>
@@ -95,27 +151,31 @@ function UploadFile() {
                placeholder='Type the most important informations about your car'
                name='description'
             ></textarea>
-            <LoadingButton className='mx-auto'>Create</LoadingButton>
+            <span className='font-semibold text-xl py-8'>Seller details</span>
+            <label htmlFor='city'>City:</label>
+            <Input type='text' placeholder='city' name='city' id='city' defaultValue={sellerData?.city} />
+            <label htmlFor='contact person'>Contact person:</label>
+            <Input
+               type='text'
+               placeholder='contact person'
+               name='contactPerson'
+               id='contact person'
+               defaultValue={sellerData?.contactPerson}
+            />
+            <label htmlFor='tel number'>Tel number:</label>
+            <Input
+               type='tel'
+               placeholder='tel number'
+               name='telNumber'
+               id='tel number'
+               defaultValue={sellerData?.telNumber}
+            />
+            <LoadingButton isLoading={isPending} className='mx-auto'>
+               Create
+            </LoadingButton>
          </div>
       </form>
    );
 }
 
 export default UploadFile;
-
-// tytul
-// cena
-// model
-// poj silnika
-// moc silnika
-// rok produkcji
-// paliwo
-// typ nadwozia
-
-// przebieg
-// kolor
-// skrzynia
-// stan techniczny (uszkodzone, nieuszkodzone)
-// kraj pochodzenia
-// naped
-// opis

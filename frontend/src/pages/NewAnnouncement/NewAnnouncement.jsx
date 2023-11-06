@@ -1,4 +1,3 @@
-import Input from '../../ui/Input';
 import UploadFile from './components/UploadFile';
 
 function NewAnnouncement() {

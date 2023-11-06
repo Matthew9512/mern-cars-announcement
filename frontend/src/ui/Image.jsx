@@ -1,5 +1,7 @@
-function Image({ ...props }) {
-   return <img {...props} className='w-full h-full object-contain' />;
+import { twMerge } from 'tailwind-merge';
+
+function Image({ className, ...props }) {
+   return <img {...props} className={twMerge('w-full h-full object-cover', className)} />;
 }
 
 export default Image;

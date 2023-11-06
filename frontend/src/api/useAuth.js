@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from './fetchData';
+import { jwtDecodeToken } from './axiosHelper';
 
 export const useRegister = function () {
    const navigate = useNavigate();
@@ -53,4 +54,20 @@ export const useLogin = function () {
    });
 
    return { mutate, isPending };
+};
+
+export const useGetUser = function () {
+   const { id } = jwtDecodeToken();
+   const { isPending, data } = useQuery({
+      queryKey: ['user', id],
+      queryFn: () =>
+         fetchData(
+            {
+               url: `user/${id}`,
+            },
+            false
+         ),
+   });
+
+   return { isPending, data };
 };

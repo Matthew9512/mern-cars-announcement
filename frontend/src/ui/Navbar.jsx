@@ -9,20 +9,20 @@ function Navbar() {
    const location = useLocation();
 
    return (
-      <nav className='flex justify-between w-full py-2 px-8'>
-         <p className='flex items-center gap-2'>{carIcon} Car Rent</p>
-         <div className='flex gap-4 items-center'>
-            <p>lorem 1</p>
-            <p>lorem 2</p>
-         </div>
-         {isLogged && location.pathname !== '/new-announcement' && (
-            <LinkButton variant='primary' to='/new-announcement'>
-               + Add New
-            </LinkButton>
-         )}
-         <LinkButton variant='primary' to='/login'>
-            {isLogged ? isLogged?.username : 'Login'}
+      <nav className='flex justify-between items-center w-full py-2 px-8'>
+         <LinkButton to='/' className='flex items-center gap-2'>
+            {carIcon} Car Rent
          </LinkButton>
+         <div>
+            {isLogged && location.pathname !== '/new-announcement' && (
+               <LinkButton variant='primary' to='/new-announcement'>
+                  + Add New
+               </LinkButton>
+            )}
+            <LinkButton variant='primary' to='/login' className='ml-4'>
+               {isLogged ? isLogged?.username : 'Login'}
+            </LinkButton>
+         </div>
       </nav>
    );
 }
