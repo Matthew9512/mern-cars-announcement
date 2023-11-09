@@ -10,7 +10,7 @@ function Navbar() {
 
    return (
       <nav className='flex justify-between items-center w-full py-2 px-8'>
-         <LinkButton to='/' className='flex items-center gap-2'>
+         <LinkButton to='/' className='flex items-center gap-2 text-lg'>
             {carIcon} Car Rent
          </LinkButton>
          <div>

@@ -1,5 +1,6 @@
 const carsModel = require('../models/carsModel');
 const usersModel = require('../models/usersModel');
+const utils = require('../utils/constants');
 
 const addNewOffer = async function (req, res, next) {
    try {
@@ -43,13 +44,80 @@ const getOffer = async function (req, res, next) {
 
 const getFeaturesOffer = async function (req, res, next) {
    try {
-      const featuresOffer = await carsModel.find({ features: true });
+      const offer = await carsModel.find({ features: true });
 
-      res.status(200).json(featuresOffer);
+      res.status(200).json({ offer });
    } catch (error) {
       next(error.message);
       console.log(error.message);
    }
 };
 
-module.exports = { addNewOffer, getOffer, getFeaturesOffer };
+const getSearchOffer = async function (req, res, next) {
+   try {
+      const query = req.query;
+
+      let queryString;
+      let currentPage;
+
+      if (!query.page) {
+         currentPage = 1;
+         queryString = query;
+      } else {
+         currentPage = +query.page;
+         const { page, ...queryParam } = query;
+         queryString = queryParam;
+      }
+
+      if (!queryString?.brand)
+         return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
+
+      const pagesAmount = Math.ceil(await carsModel.find(queryString).countDocuments());
+
+      const offer = await carsModel
+         .find(queryString)
+         .limit(utils._RES_PER_PAGE)
+         .skip((currentPage - 1) * utils._RES_PER_PAGE);
+
+      if (!offer.length)
+         return res.status(404).json({ message: `Looks like we don't have an offers that can match your criteria` });
+
+      res.status(200).json({ offer, pagesAmount });
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+module.exports = { addNewOffer, getOffer, getFeaturesOffer, getSearchOffer };
+
+// const getSearchOffer = async function (req, res, next) {
+//    try {
+//       const { brand, model, fuel, year, page } = req.query;
+
+//       console.log(page);
+//       let searchQuery = { brand };
+
+//       if (!brand) return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
+//       if (model && model !== 'all') searchQuery.model = model;
+//       if (fuel && fuel !== 'all') searchQuery.fuel = fuel;
+//       if (year && year !== 'all') searchQuery.year = year;
+
+//       const pagesAmount = Math.ceil(await carsModel.find(searchQuery).countDocuments());
+
+//       const offer = await carsModel
+//          .find(searchQuery)
+//          .limit(utils._RES_PER_PAGE)
+//          .skip((page - 1) * utils._RES_PER_PAGE);
+
+//       console.log(pagesAmount);
+
+//       if (!offer.length)
+//          return res.status(404).json({ message: `Looks like we don't have an offers that can match your criteria` });
+
+//       res.status(200).json({ offer, pagesAmount });
+//    } catch (error) {
+//       next(error.message);
+//       console.log(error.message);
+//    }
+// };

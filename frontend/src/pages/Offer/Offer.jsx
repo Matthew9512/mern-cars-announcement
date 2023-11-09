@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 
 function Offer() {
    const { id } = useParams();
-   const { data, isPending, isError } = useGetOffer(id);
+   const { data, isPending, error } = useGetOffer(id);
 
    useEffect(() => {
       scrollTo({
@@ -24,8 +24,8 @@ function Offer() {
    return (
       <section className='px-8 py-16 relative min-h-screen lg:w-4/5 w-full mx-auto flex flex-col'>
          {isPending && <LoadingSpinner />}
-         {isError && <p>Something went wrong please try again later</p>}
-         {data ? (
+         {error && <p className='mx-auto'>{error?.message}</p>}
+         {data && (
             <>
                <div className='flex xl:flex-row flex-col gap-8 relative'>
                   <OfferImages images={data?.images} />
@@ -36,8 +36,6 @@ function Offer() {
                </div>
                <OfferDetils data={data} />
             </>
-         ) : (
-            <p>Offer not found</p>
          )}
       </section>
    );

@@ -33,7 +33,7 @@ export const useAddNewOffer = function () {
 };
 
 export const useGetOffer = function (id) {
-   const { data, isPending, isError } = useQuery({
+   const { data, isPending, error } = useQuery({
       queryKey: ['carOffer', id],
       queryFn: () =>
          fetchData({
@@ -41,17 +41,18 @@ export const useGetOffer = function (id) {
          }),
    });
 
-   return { data, isPending, isError };
+   return { data, isPending, error };
 };
 
-export const useGetFeatures = function () {
-   const { data, isPending, isError } = useQuery({
-      queryKey: ['featuresOffer'],
+export const useSearchOffer = function (searchParams) {
+   const endpoint = !searchParams.size ? `/features` : `/q?${searchParams}`;
+   const { data, isPending, error } = useQuery({
+      queryKey: ['featuresOffer', endpoint],
       queryFn: () =>
          fetchData({
-            url: `/offer/features`,
+            url: `/offer${endpoint}`,
          }),
    });
 
-   return { data, isPending, isError };
+   return { data, isPending, error };
 };

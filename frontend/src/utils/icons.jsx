@@ -13,7 +13,7 @@ import {
 
 // import { SiKia } from 'react-icons/si';
 
-export const carIcon = <FaCar style={{ color: '#2B59FF' }} />;
+export const carIcon = <FaCar style={{ color: '#2B59FF', height: '22px', width: '22px' }} />;
 export const searchIcon = <CiSearch style={{ width: '24px', height: '20px' }} />;
 export const fuelIcon = <BsFuelPump />;
 export const transmissionIcon = <PiCaretCircleDoubleUpBold />;

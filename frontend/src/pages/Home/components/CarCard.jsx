@@ -22,7 +22,7 @@ function CarCard({ item }) {
                {engineIcon} {item?.engineCapacity}
             </span>
          </div>
-         <LinkButton to={`offer/${item?._id}`} variant='primary' className='ml-12 mt-4'>
+         <LinkButton to={`offer/${item?._id}`} variant='primary' className='ml-[3.7rem] mt-4'>
             See more
          </LinkButton>
       </div>

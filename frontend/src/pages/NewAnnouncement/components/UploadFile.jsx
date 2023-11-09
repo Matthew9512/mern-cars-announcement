@@ -40,19 +40,19 @@ function UploadFile() {
       const transmitionType = document.querySelector('.activeBtnTransmition').textContent.toLowerCase();
 
       // users id from token
-      const { id } = jwtDecodeToken();
+      const decoded = jwtDecodeToken();
 
+      if (!decoded) return toast.error(`Please log in in order to finish`);
       const form = new FormData(e.currentTarget);
 
       // stringifyed version of images links array, parse on backend
       form.append('images', JSON.stringify(uploadedImgArr));
       form.append('transmitionType', transmitionType);
-      form.append('userId', id);
+      form.append('userId', decoded?.id);
 
       const { city, telNumber, contactPerson, ...carData } = Object.fromEntries(form);
       const sellerData = { city, telNumber, contactPerson };
 
-      // const formData = Object.fromEntries(form);
       mutate({ carData, sellerData });
    };
 
@@ -179,3 +179,35 @@ function UploadFile() {
 }
 
 export default UploadFile;
+
+// export const testing = ['brand', 'model', 'fuel', 'Toyota', 'Volkswagen', 'Volvo'];
+// console.log(testing);
+
+// const [curretnInput, setCurretnInput] = useState(0);
+// const lestGo = () => {};
+// const handleSetCurrentInput = (e) => {
+//    const current = e.target;
+//    if (current.value.length >= 5) return;
+//    if (current.value.length > 3) return setCurretnInput((prev) => prev + 1);
+// };
+// console.log(curretnInput);
+// return (
+//    <form onSubmit={lestGo} onChange={handleSetCurrentInput} className='py-16'>
+//       <div className='flex flex-col'>
+//          {testing.map((value, i) => (
+//             <div key={i}>
+//                <label htmlFor={value}>{value}:</label>
+//                <Input
+//                   data-index={i}
+//                   type='text'
+//                   disabled={i > curretnInput}
+//                   placeholder={value}
+//                   name={value}
+//                   id={value}
+//                   required
+//                />
+//             </div>
+//          ))}
+//       </div>
+//    </form>
+// );

@@ -56,17 +56,19 @@ export const useLogin = function () {
    return { mutate, isPending };
 };
 
-export const useGetUser = function () {
-   const { id } = jwtDecodeToken();
+export const useGetUser = async function () {
+   const decoded = jwtDecodeToken();
    const { isPending, data } = useQuery({
-      queryKey: ['user', id],
-      queryFn: () =>
-         fetchData(
+      queryKey: ['user', decoded?.id],
+      queryFn: () => {
+         if (!decoded) return toast.error(`Please log in in order to finish`);
+         return fetchData(
             {
-               url: `user/${id}`,
+               url: `user/${decoded?.id}`,
             },
             false
-         ),
+         );
+      },
    });
 
    return { isPending, data };

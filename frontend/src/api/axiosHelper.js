@@ -62,6 +62,7 @@ export function jwtDecodeToken() {
    if (token) {
       decoded = jwtDecode(token);
    }
+   if (!decoded) return toast.error(`Please log in in order to finish`);
    //   } else window.location = '/';
    return decoded;
 }
