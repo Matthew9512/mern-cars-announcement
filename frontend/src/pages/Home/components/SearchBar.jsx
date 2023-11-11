@@ -8,8 +8,10 @@ import { searchIcon } from '../../../utils/icons';
 import { useSearchOffer } from '../../../api/useOffer';
 
 function SearchBar() {
-   const [disable, setDisable] = useState(true);
    let [searchParams, setSearchParams] = useSearchParams();
+   const [disable, setDisable] = useState(() => {
+      return searchParams.get('brand') ? false : true;
+   });
    const { data, error, isPending } = useSearchOffer(searchParams);
 
    const handleSearchForm = (e) => {
@@ -47,7 +49,14 @@ function SearchBar() {
          onSubmit={handleSearchForm}
          className='flex xl:flex-row flex-col gap-4 justify-between xl:w-4/5 xl:max-w-none max-w-[16rem] mx-auto py-12'
       >
-         <Input onChange={handleBtnState} placeholder='brand' type='text' name='brand' list='brand-list' />
+         <Input
+            onChange={handleBtnState}
+            placeholder='brand'
+            type='text'
+            name='brand'
+            defaultValue={searchParams.get('brand') || ''}
+            list='brand-list'
+         />
          <datalist id='brand-list'>
             {brandsArr.map((option) => (
                <option value={option} key={option}>
@@ -55,9 +64,9 @@ function SearchBar() {
                </option>
             ))}
          </datalist>
-         <Input placeholder='model' type='text' name='model' />
-         <Select optionsList={fuelsArr} name='fuel' />
-         <Select optionsList={productionYearsArr} name='year' />
+         <Input placeholder='model' type='text' name='model' defaultValue={searchParams.get('model') || ''} />
+         <Select optionsList={fuelsArr} name='fuel' defaultValue={searchParams.get('fuel') || ''} />
+         <Select optionsList={productionYearsArr} name='year' defaultValue={searchParams.get('year') || ''} />
          <LoadingButton isLoading={isPending} disabled={disable} className='flex gap-2 items-center mx-auto w-max'>
             {searchIcon} Cars
          </LoadingButton>

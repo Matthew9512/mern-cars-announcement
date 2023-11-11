@@ -5,11 +5,16 @@ import { formatPrice } from '../../../utils/helpers';
 
 function CarCard({ item }) {
    return (
-      <div className='bg-secondary-white p-4 rounded-md w-[16em]'>
+      <div className='bg-secondary-white p-4 rounded-md w-[16em] group'>
          <p className='font-semibold mb-3 truncate'>{item?.title}</p>
          <p className='text-2xl'>&euro; {formatPrice(item?.price)}</p>
-         <div className='w-56 h-56 my-4 flex-center rounded-md overflow-hidden'>
-            <Image src={item?.images?.at(0)} alt={item?.title} />
+         <div className='w-56 h-56 my-4 flex-center rounded-md overflow-hidden relative'>
+            <Image src={item?.images?.at(0)} alt={`${item?.brand} image`} />
+            <Image
+               src={item?.images?.at(1)}
+               alt={`${item?.brand} image`}
+               className='absolute inset-0 opacity-0 duration-300 group-hover:opacity-100'
+            />
          </div>
          <div className='flex-center gap-6'>
             <span className='flex flex-col items-center gap-2'>
@@ -19,7 +24,7 @@ function CarCard({ item }) {
                {transmissionIcon} {item?.transmitionType}
             </span>
             <span className='flex flex-col items-center gap-2'>
-               {engineIcon} {item?.engineCapacity}
+               {engineIcon} {(+item?.engineCapacity / 1000).toFixed(1)}
             </span>
          </div>
          <LinkButton to={`offer/${item?._id}`} variant='primary' className='ml-[3.7rem] mt-4'>
@@ -30,24 +35,3 @@ function CarCard({ item }) {
 }
 
 export default CarCard;
-// function CarCard({item}) {
-//    return (
-//       <div className='bg-secondary-white p-4 rounded-md'>
-//          <p className='font-semibold mb-3'>kia pro ceed</p>
-//          <p>
-//             <span className='text-2xl'>$100</span>/day
-//          </p>
-//          <div className='w-56 h-56 flex-center'>
-//             <Image src='hero.png' />
-//          </div>
-//          <div className='flex-center gap-6'>
-//             <span className='flex flex-col items-center gap-2'>{fuelIcon} diesel</span>
-//             <span className='flex flex-col items-center gap-2'>{transmissionIcon} manual</span>
-//             <span className='flex flex-col items-center gap-2'>{engineIcon} 3.2</span>
-//          </div>
-//          <Button variant='primary' className='ml-12 mt-4'>
-//             See more
-//          </Button>
-//       </div>
-//    );
-// }

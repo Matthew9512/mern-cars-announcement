@@ -9,9 +9,9 @@ import {
    AiOutlineLoading3Quarters,
    AiOutlineCloseCircle,
    AiOutlineHeart,
+   AiFillHeart,
 } from 'react-icons/ai';
-
-// import { SiKia } from 'react-icons/si';
+import { FcNext, FcPrevious } from 'react-icons/fc';
 
 export const carIcon = <FaCar style={{ color: '#2B59FF', height: '22px', width: '22px' }} />;
 export const searchIcon = <CiSearch style={{ width: '24px', height: '20px' }} />;
@@ -22,10 +22,11 @@ export const githubIcon = <AiOutlineGithub />;
 export const linkedInIcon = <AiOutlineLinkedin />;
 export const loadingSpinnerIcon = <AiOutlineLoading3Quarters className='animate-spin' />;
 export const closeIcon = <AiOutlineCloseCircle style={{ width: '18px', height: '18px' }} />;
-export const heartIcon = <AiOutlineHeart style={{ width: '18px', height: '18px' }} />;
+export const heartIconOutline = <AiOutlineHeart style={{ width: '18px', height: '18px' }} />;
+export const heartIconFilled = <AiFillHeart style={{ width: '18px', height: '18px' }} />;
 export const imagesIcon = <FaPhotoVideo style={{ width: '18px', height: '18px' }} />;
 export const telIcon = <BsFillTelephoneFill style={{ width: '18px', height: '18px' }} />;
 export const personIcon = <BsFillPersonFill style={{ width: '18px', height: '18px' }} />;
 export const cityIcon = <FaLocationDot style={{ width: '18px', height: '18px' }} />;
-
-// export const carBrandIcon = <SiKia />;
+export const nextIcon = <FcNext style={{ width: '26px', height: '26px' }} />;
+export const prevIcon = <FcPrevious style={{ width: '26px', height: '26px' }} />;

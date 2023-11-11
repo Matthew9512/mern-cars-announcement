@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { carIcon } from '../utils/icons';
 import LinkButton from './LinkButton';
-import { useLocation } from 'react-router-dom';
 import { jwtDecodeToken } from '../api/axiosHelper';
 
 function Navbar() {
@@ -13,7 +13,10 @@ function Navbar() {
          <LinkButton to='/' className='flex items-center gap-2 text-lg'>
             {carIcon} Car Rent
          </LinkButton>
-         <div>
+         <div className='space-x-2'>
+            <LinkButton variant='primary' to='/followed' className='ml-4'>
+               Followed
+            </LinkButton>
             {isLogged && location.pathname !== '/new-announcement' && (
                <LinkButton variant='primary' to='/new-announcement'>
                   + Add New

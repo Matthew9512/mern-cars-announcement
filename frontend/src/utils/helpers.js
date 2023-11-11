@@ -1,6 +1,37 @@
 export const formatPrice = function (price) {
    return new Intl.NumberFormat().format(price);
 };
+
+export const formatResData = function (resData) {
+   let resDataCopy = {};
+   Object.entries(resData).map(([key, value]) => {
+      switch (key) {
+         case 'engineCapacity':
+            resDataCopy['engine capacity'] = `${(+value / 1000).toFixed(1)} cm3`;
+            break;
+         case 'horsePower':
+            resDataCopy['horse power'] = `${value} HP`;
+            break;
+         case 'price':
+            resDataCopy[key] = `${formatPrice(value)} €`;
+            break;
+         case 'transmitionType':
+            resDataCopy['transmition type'] = value;
+            break;
+         case 'year':
+            resDataCopy['production year'] = value;
+            break;
+         default:
+            resDataCopy[key] = value;
+      }
+   });
+
+   return resDataCopy;
+};
+
+export const getLS = function () {
+   return localStorage.getItem('car__ads') ? JSON.parse(localStorage.getItem('car__ads')) : [];
+};
 // export const formatPrice = function (price) {
 //    return new Intl.NumberFormat('en-EN', {
 //       style: 'currency',

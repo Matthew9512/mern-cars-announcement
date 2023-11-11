@@ -55,19 +55,7 @@ const getFeaturesOffer = async function (req, res, next) {
 
 const getSearchOffer = async function (req, res, next) {
    try {
-      const query = req.query;
-
-      let queryString;
-      let currentPage;
-
-      if (!query.page) {
-         currentPage = 1;
-         queryString = query;
-      } else {
-         currentPage = +query.page;
-         const { page, ...queryParam } = query;
-         queryString = queryParam;
-      }
+      const { page, ...queryString } = req.query;
 
       if (!queryString?.brand)
          return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
@@ -77,7 +65,7 @@ const getSearchOffer = async function (req, res, next) {
       const offer = await carsModel
          .find(queryString)
          .limit(utils._RES_PER_PAGE)
-         .skip((currentPage - 1) * utils._RES_PER_PAGE);
+         .skip((page - 1) * utils._RES_PER_PAGE);
 
       if (!offer.length)
          return res.status(404).json({ message: `Looks like we don't have an offers that can match your criteria` });

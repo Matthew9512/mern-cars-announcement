@@ -15,6 +15,7 @@ function CarsList() {
          <section className='grid grid-cols-[repeat(auto-fill,minmax(16em,1fr))] place-items-center gap-y-8 relative min-h-[16em]'>
             {isPending && <LoadingSpinner />}
             {error && <p className='col-span-full'>{error?.message}</p>}
+            <p>SEE MORE BTN FOR FEATURES</p>
             {data && data?.offer.map((item) => <CarCard key={item?._id} item={item} />)}
          </section>
          {data?.pagesAmount > 1 && (
