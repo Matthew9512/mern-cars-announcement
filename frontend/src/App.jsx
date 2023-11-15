@@ -10,10 +10,13 @@ import Offer from './pages/Offer/Offer';
 import PageNotFound from './pages/PageNotFound';
 import ServerDown from './pages/ServerDown';
 import Followed from './pages/Followed';
-
+import User from './pages/User/User';
+import UsersAnnouncement from './pages/User/components/UsersAnnouncement';
+import UsersPersonalData from './pages/User/components/UsersPersonalData';
+// pb-24
 function App() {
    return (
-      <main className='max-w-screen-2xl mx-auto min-h-screen relative pb-24'>
+      <main className='max-w-screen-2xl mx-auto min-h-screen relative'>
          <BrowserRouter>
             <Routes>
                <Route element={<Layout />}>
@@ -23,7 +26,10 @@ function App() {
                   <Route path='followed' element={<Followed />} />
                   <Route path='offer/:id' element={<Offer />} />
                   <Route element={<ProtectedRoutes />}>
-                     <Route path='/new-announcement' element={<NewAnnouncement />} />
+                     <Route path='new-announcement' element={<NewAnnouncement />} />
+                     <Route path='user' element={<User />} />
+                     <Route path='user/announcements' element={<UsersAnnouncement />} />
+                     <Route path='user/users-data' element={<UsersPersonalData />} />
                   </Route>
                </Route>
                <Route path='*' element={<PageNotFound />} />

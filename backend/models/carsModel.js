@@ -31,6 +31,7 @@ const carsSchema = new schema({
       type: Boolean,
       default: false,
    },
+   active: { type: Boolean, default: true },
    seller: {
       city: String,
       contactPerson: String,

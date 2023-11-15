@@ -33,7 +33,7 @@ const getOffer = async function (req, res, next) {
       const { id } = req.params;
       const findOffer = await carsModel.findById(id);
 
-      if (!findOffer) return res.status(404).json({ message: `Offer not found` });
+      if (!findOffer) return res.status(404).json({ message: `Ad was deleted or is not longer available` });
 
       res.status(200).json(findOffer);
    } catch (error) {
@@ -64,6 +64,7 @@ const getSearchOffer = async function (req, res, next) {
 
       const offer = await carsModel
          .find(queryString)
+         .where({ active: true })
          .limit(utils._RES_PER_PAGE)
          .skip((page - 1) * utils._RES_PER_PAGE);
 

@@ -5,14 +5,14 @@ import Input from '../../../ui/Input';
 import Select from '../../../ui/Select';
 import { brandsArr, fuelsArr, productionYearsArr } from '../../../utils/constants';
 import { searchIcon } from '../../../utils/icons';
-import { useSearchOffer } from '../../../api/useOffer';
+// import { useSearchOffer } from '../../../api/useOffer';
 
 function SearchBar() {
    let [searchParams, setSearchParams] = useSearchParams();
    const [disable, setDisable] = useState(() => {
       return searchParams.get('brand') ? false : true;
    });
-   const { data, error, isPending } = useSearchOffer(searchParams);
+   // const { data, error, isPending } = useSearchOffer(searchParams);
 
    const handleSearchForm = (e) => {
       e.preventDefault();
@@ -41,8 +41,6 @@ function SearchBar() {
       setDisable(false);
    };
 
-   console.log(data);
-
    return (
       <form
          id='searchForm'
@@ -67,7 +65,8 @@ function SearchBar() {
          <Input placeholder='model' type='text' name='model' defaultValue={searchParams.get('model') || ''} />
          <Select optionsList={fuelsArr} name='fuel' defaultValue={searchParams.get('fuel') || ''} />
          <Select optionsList={productionYearsArr} name='year' defaultValue={searchParams.get('year') || ''} />
-         <LoadingButton isLoading={isPending} disabled={disable} className='flex gap-2 items-center mx-auto w-max'>
+         <LoadingButton disabled={disable} className='flex gap-2 items-center mx-auto w-max'>
+            {/* <LoadingButton isLoading={isPending} disabled={disable} className='flex gap-2 items-center mx-auto w-max'> */}
             {searchIcon} Cars
          </LoadingButton>
       </form>

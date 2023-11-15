@@ -1,4 +1,5 @@
 const usersModel = require('../models/usersModel');
+const carsModel = require('../models/carsModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -60,6 +61,47 @@ const login = async function (req, res, next) {
    }
 };
 
+const logout = (req, res) => {
+   const cookies = req.cookies;
+
+   if (!cookies?.jwt) return res.sendStatus(204);
+
+   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+
+   res.status(200).json({ message: `Logout successful` });
+};
+
+const deleteAcc = async function (req, res, next) {
+   try {
+      const { id } = req.params;
+
+      const user = await usersModel.findByIdAndDelete(id);
+
+      if (!user) return res.status(404).json({ message: `User not found` });
+
+      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+
+      res.status(200).json({ message: `Account successfully deleted` });
+   } catch (error) {
+      next(error.message);
+   }
+};
+
+const updateUserInfo = async function (req, res, next) {
+   try {
+      const { id } = req.params;
+
+      if (!id) return res.status(404).json({ message: `User data required` });
+
+      await usersModel.findByIdAndUpdate(id, { ...req.body });
+
+      res.status(200).json({ message: `Your account has been updated` });
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
 const getSellerInfo = async function (req, res, next) {
    try {
       const { id } = req.params;
@@ -73,4 +115,72 @@ const getSellerInfo = async function (req, res, next) {
    }
 };
 
-module.exports = { register, login, getSellerInfo };
+const getUser = async function (req, res, next) {
+   try {
+      const { id } = req.params;
+
+      const user = await usersModel.findById(id).select('-password');
+
+      res.status(200).json(user);
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+const activateOffer = async function (req, res, next) {
+   try {
+      const { offerID } = req.body.body;
+      if (!offerID) return res.status(400).json({ message: `Offer data required` });
+
+      await carsModel.findByIdAndUpdate(offerID, { active: true });
+
+      res.status(200).json({ message: `Your offer active again` });
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+const deactivateOffer = async function (req, res, next) {
+   try {
+      const { offerID } = req.body.body;
+      if (!offerID) return res.status(400).json({ message: `Offer data required` });
+
+      await carsModel.findByIdAndUpdate(offerID, { active: false, features: false });
+
+      res.status(200).json({ message: `Your offer is no longer active` });
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+const removeOffer = async function (req, res, next) {
+   try {
+      const { userID, offerID } = req.body.body;
+      if (!userID || !offerID) return res.status(400).json({ message: `Offer data required` });
+
+      const deleteCar = await carsModel.findByIdAndDelete(offerID);
+
+      if (deleteCar) await usersModel.findByIdAndUpdate(userID, { $pull: { announcements: offerID } });
+
+      res.status(200).json({ message: `Offer removed successfully` });
+   } catch (error) {
+      next(error.message);
+      console.log(error.message);
+   }
+};
+
+module.exports = {
+   register,
+   login,
+   getSellerInfo,
+   getUser,
+   deleteAcc,
+   updateUserInfo,
+   logout,
+   deactivateOffer,
+   activateOffer,
+   removeOffer,
+};

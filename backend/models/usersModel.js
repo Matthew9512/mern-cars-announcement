@@ -6,6 +6,7 @@ const usersSchema = new schema({
    username: String,
    password: String,
    city: String,
+   created: { type: Date, default: Date.now },
    contactPerson: String,
    telNumber: String,
    announcements: [String],

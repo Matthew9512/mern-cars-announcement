@@ -9,11 +9,11 @@ import UploadedImgs from './UploadedImgs';
 import { brandsArr, carBodyTypesArr, fuelsArr } from '../../../utils/constants';
 import { useAddNewOffer } from '../../../api/useOffer';
 import { jwtDecodeToken } from '../../../api/axiosHelper';
-import { useGetUser } from '../../../api/useAuth';
+import { useGetSeller } from '../../../api/useAuth';
 
 function UploadFile() {
    const { mutate, isPending } = useAddNewOffer();
-   const { data: sellerData } = useGetUser();
+   const { data: sellerData } = useGetSeller();
    const [files, setFiles] = useState([]);
    const [uploadedImgArr, setUploadedImgArr] = useState([]);
    const { handleFileUpload, filePerc, err, loading } = useFileUpload(setUploadedImgArr);
@@ -32,7 +32,7 @@ function UploadFile() {
       click.classList.add('activeBtnTransmition');
    };
 
-   const lestGo = (e) => {
+   const handleSubmitForm = (e) => {
       e.preventDefault();
       if (uploadedImgArr.length >= 11) return toast.error(`You can upload more than 10 images`);
 
@@ -67,11 +67,11 @@ function UploadFile() {
       // clear images arr to remove duplicates
       setFiles([]);
    }, [files]);
-
+   console.log(sellerData);
    return (
-      <form onSubmit={lestGo} className='py-16'>
+      <form onSubmit={handleSubmitForm} className='py-16'>
          <h1 className='font-semibold text-2xl mx-auto pb-8'>Add New Announcement</h1>
-         <div className='flex lg:flex-row flex-col lg:gap-16 gap-8 '>
+         <div className='flex lg:flex-row flex-col lg:gap-16 gap-8'>
             <div className='flex flex-col gap-2 w-72'>
                <label htmlFor='title'>Announcement title:</label>
                <Input type='text' placeholder='title' name='title' id='title' />

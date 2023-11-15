@@ -40,7 +40,7 @@ function OfferImages({ images }) {
    }, [mainImg]);
 
    return (
-      <article className='bg-secondary-white rounded-md lg:w-[44em] w-full'>
+      <div className='bg-secondary-white rounded-md lg:w-[44em] w-full'>
          <div className='lg:w-[38em] h-[25em] mx-auto relative'>
             <span onClick={prevImg} className='absolute top-1/2 -left-4 -translate-x-1/2'>
                {prevIcon}
@@ -66,7 +66,7 @@ function OfferImages({ images }) {
                </div>
             ))}
          </div>
-      </article>
+      </div>
    );
 }
 

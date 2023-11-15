@@ -22,7 +22,7 @@ function Navbar() {
                   + Add New
                </LinkButton>
             )}
-            <LinkButton variant='primary' to='/login' className='ml-4'>
+            <LinkButton variant='primary' to={isLogged ? 'user' : 'login'} className='ml-4'>
                {isLogged ? isLogged?.username : 'Login'}
             </LinkButton>
          </div>

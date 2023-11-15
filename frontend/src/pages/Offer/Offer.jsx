@@ -4,6 +4,7 @@ import { useGetOffer } from '../../api/useOffer';
 import OfferImages from './components/OfferImages';
 import OfferDetils from './components/OfferDesc';
 import ContactWithSeller from './components/ContactWithSeller';
+import NoOfferFound from './components/NoOfferFound';
 import LoadingSpinner from '../../ui/LoadingSpinner';
 import MainDetails from './components/MainDetails';
 
@@ -24,18 +25,23 @@ function Offer() {
    return (
       <section className='px-8 py-16 relative min-h-screen lg:w-4/5 w-full mx-auto flex flex-col'>
          {isPending && <LoadingSpinner />}
-         {error && <p className='mx-auto'>{error?.message}</p>}
-         {data && (
-            <>
-               <div className='flex xl:flex-row flex-col gap-8 relative'>
-                  <OfferImages images={data?.images} />
-                  <div className='flex flex-col gap-4'>
-                     <MainDetails data={data} />
-                     <ContactWithSeller sellerData={data?.seller} />
+         {error && <NoOfferFound message={error?.message} />}
+         {/* offer if no longer active */}
+         {!data?.active ? (
+            <NoOfferFound message={'error?.message'} />
+         ) : (
+            data && (
+               <>
+                  <div className='flex xl:flex-row flex-col gap-8 relative'>
+                     <OfferImages images={data?.images} />
+                     <div className='flex flex-col gap-4'>
+                        <MainDetails data={data} />
+                        <ContactWithSeller sellerData={data?.seller} />
+                     </div>
                   </div>
-               </div>
-               <OfferDetils data={data} />
-            </>
+                  <OfferDetils data={data} />
+               </>
+            )
          )}
       </section>
    );

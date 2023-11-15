@@ -49,6 +49,10 @@ html {
       transform: rotate(1turn);
    }
 }
+.no-data {
+   background: url('../no-offer.png') center no-repeat;
+   background-size: contain;
+}
 
 /*  */
 .ui {

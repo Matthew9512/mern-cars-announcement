@@ -3,7 +3,7 @@ import LinkButton from '../../../ui/LinkButton';
 import { engineIcon, fuelIcon, transmissionIcon } from '../../../utils/icons';
 import { formatPrice } from '../../../utils/helpers';
 
-function CarCard({ item }) {
+function CarCard({ item, disabled = false }) {
    return (
       <div className='bg-secondary-white p-4 rounded-md w-[16em] group'>
          <p className='font-semibold mb-3 truncate'>{item?.title}</p>
@@ -27,7 +27,7 @@ function CarCard({ item }) {
                {engineIcon} {(+item?.engineCapacity / 1000).toFixed(1)}
             </span>
          </div>
-         <LinkButton to={`offer/${item?._id}`} variant='primary' className='ml-[3.7rem] mt-4'>
+         <LinkButton to={`/offer/${item?._id}`} disabled={disabled} variant='primary' className='ml-[3.7rem] mt-4'>
             See more
          </LinkButton>
       </div>
