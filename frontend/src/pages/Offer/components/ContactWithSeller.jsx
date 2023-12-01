@@ -1,7 +1,15 @@
+import { useGetUser } from '../../../api/useAuth';
 import LinkButton from '../../../ui/LinkButton';
 import { cityIcon, personIcon, telIcon } from '../../../utils/icons';
 
-function ContactWithSeller({ sellerData }) {
+/**
+ * deal with toast if no token
+ */
+
+function ContactWithSeller({ sellerData, sellerId }) {
+   const { data } = useGetUser();
+
+   console.log('deal with toast if no token');
    return (
       <>
          <h3 className='font-semibold text-lg lg:mt-4 my-0'>Contact with seller:</h3>
@@ -18,7 +26,9 @@ function ContactWithSeller({ sellerData }) {
                {cityIcon}
                {sellerData?.city}
             </p>
-            <LinkButton variant='primary'>Chat with seller</LinkButton>
+            <LinkButton to={`/user/messages/${sellerId}`} disabled={!data?._id} variant='primary'>
+               Chat with seller
+            </LinkButton>
          </div>
       </>
    );

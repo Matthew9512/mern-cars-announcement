@@ -13,6 +13,8 @@ import Followed from './pages/Followed';
 import User from './pages/User/User';
 import UsersAnnouncement from './pages/User/components/UsersAnnouncement';
 import UsersPersonalData from './pages/User/components/UsersPersonalData';
+import Messenger from './pages/User/components/Messenger';
+
 // pb-24
 function App() {
    return (
@@ -30,6 +32,8 @@ function App() {
                      <Route path='user' element={<User />} />
                      <Route path='user/announcements' element={<UsersAnnouncement />} />
                      <Route path='user/users-data' element={<UsersPersonalData />} />
+                     <Route path='user/messages' element={<Messenger />} />
+                     <Route path='user/messages/:id' element={<Messenger />} />
                   </Route>
                </Route>
                <Route path='*' element={<PageNotFound />} />

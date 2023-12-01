@@ -60,3 +60,12 @@ html {
    gap: 4em;
    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
+.error {
+   border: 2px solid red;
+   outline: none;
+}
+
+.no-error {
+   border: 2px solid rgb(210, 208, 208);
+   outline: none;
+}

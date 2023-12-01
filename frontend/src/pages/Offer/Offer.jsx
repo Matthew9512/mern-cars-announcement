@@ -36,7 +36,7 @@ function Offer() {
                      <OfferImages images={data?.images} />
                      <div className='flex flex-col gap-4'>
                         <MainDetails data={data} />
-                        <ContactWithSeller sellerData={data?.seller} />
+                        <ContactWithSeller sellerData={data?.seller} sellerId={data?.seller?.sellerId} />
                      </div>
                   </div>
                   <OfferDetils data={data} />

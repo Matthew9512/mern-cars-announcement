@@ -1,10 +1,12 @@
 import Input from '../../../ui/Input';
 import UsersNavbar from './UsersNavbar';
-import { useGetUser, useUpdateUserData } from '../../../api/useAuth';
+import { useUpdateUserData } from '../../../api/useAuth';
 import LoadingButton from '../../../ui/LoadingButton';
+import { UserContext } from '../../../context/userContext';
+import { useContext } from 'react';
 
 function UsersPersonalData() {
-   const { data: user, error } = useGetUser();
+   const { user } = useContext(UserContext);
    const { mutateUserData, isPending } = useUpdateUserData();
 
    const handleSubmitForm = (e) => {

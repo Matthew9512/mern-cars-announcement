@@ -5,7 +5,8 @@ function UsersNavbar() {
    const { pathname } = useLocation();
 
    return (
-      <div className='flex justify-center items-center mx-auto gap-8 border-b border-b-secondary-grey/60 w-max mb-16'>
+      // mb-16
+      <div className='flex justify-center items-center mx-auto gap-8 border-b border-b-secondary-grey/60 w-max mb-8'>
          <LinkButton to='/user' variant={pathname === '/user' ? 'nav-link' : ''}>
             My profile
          </LinkButton>
@@ -14,6 +15,9 @@ function UsersNavbar() {
          </LinkButton>
          <LinkButton to='/user/users-data' variant={pathname === '/user/users-data' ? 'nav-link' : ''}>
             My data
+         </LinkButton>
+         <LinkButton to='/user/messages' variant={pathname.startsWith('/user/messages') ? 'nav-link' : ''}>
+            Messages
          </LinkButton>
       </div>
    );

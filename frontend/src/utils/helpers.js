@@ -1,5 +1,11 @@
+import { formatDistanceStrict } from 'date-fns';
+
 export const formatPrice = function (price) {
    return new Intl.NumberFormat().format(price);
+};
+
+export const formatTime = function (time) {
+   return formatDistanceStrict(new Date(time), new Date(), { addSuffix: true });
 };
 
 export const formatResData = function (resData) {

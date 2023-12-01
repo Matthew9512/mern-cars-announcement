@@ -4,12 +4,13 @@ const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const io = require('socket.io');
 
 const corsOptions = require('./config/corsOptions');
 const connectDB = require('./config/mongoDb');
 const errorHandler = require('./middleware/errorHandler');
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(helmet());
@@ -24,9 +25,16 @@ connectDB();
 
 app.use('/user', require('./router/usersRouter'));
 app.use('/offer', require('./router/offerRouter'));
+// app.use('/message', require('./router/chatRouter'));
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const expressServer = app.listen(PORT, () => {
    console.log(`server is live`);
 });
+
+// const socket = new io.Server(expressServer, {
+//    cors: {
+//       origin: 'http://127.0.0.1:5173',
+//    },
+// });

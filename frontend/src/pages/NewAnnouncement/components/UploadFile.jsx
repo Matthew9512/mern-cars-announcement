@@ -87,7 +87,7 @@ function UploadFile() {
                <label htmlFor='model'>Model of your car:</label>
                <Input type='text' placeholder='model' name='model' id='model' />
                <Input
-                  inpRef={uploadRef}
+                  ref={uploadRef}
                   onChange={(e) => {
                      setFiles((prev) => [...prev, e.target.files]);
                   }}
@@ -180,34 +180,34 @@ function UploadFile() {
 
 export default UploadFile;
 
-// export const testing = ['brand', 'model', 'fuel', 'Toyota', 'Volkswagen', 'Volvo'];
-// console.log(testing);
+// // export const testing = ['brand', 'model', 'fuel', 'Toyota', 'Volkswagen', 'Volvo'];
+// // console.log(testing);
 
-// const [curretnInput, setCurretnInput] = useState(0);
-// const lestGo = () => {};
-// const handleSetCurrentInput = (e) => {
-//    const current = e.target;
-//    if (current.value.length >= 5) return;
-//    if (current.value.length > 3) return setCurretnInput((prev) => prev + 1);
-// };
-// console.log(curretnInput);
-// return (
-//    <form onSubmit={lestGo} onChange={handleSetCurrentInput} className='py-16'>
-//       <div className='flex flex-col'>
-//          {testing.map((value, i) => (
-//             <div key={i}>
-//                <label htmlFor={value}>{value}:</label>
-//                <Input
-//                   data-index={i}
-//                   type='text'
-//                   disabled={i > curretnInput}
-//                   placeholder={value}
-//                   name={value}
-//                   id={value}
-//                   required
-//                />
-//             </div>
-//          ))}
-//       </div>
-//    </form>
-// );
+// // const [curretnInput, setCurretnInput] = useState(0);
+// // const lestGo = () => {};
+// // const handleSetCurrentInput = (e) => {
+// //    const current = e.target;
+// //    if (current.value.length >= 5) return;
+// //    if (current.value.length > 3) return setCurretnInput((prev) => prev + 1);
+// // };
+// // console.log(curretnInput);
+// // return (
+// //    <form onSubmit={lestGo} onChange={handleSetCurrentInput} className='py-16'>
+// //       <div className='flex flex-col'>
+// //          {testing.map((value, i) => (
+// //             <div key={i}>
+// //                <label htmlFor={value}>{value}:</label>
+// //                <Input
+// //                   data-index={i}
+// //                   type='text'
+// //                   disabled={i > curretnInput}
+// //                   placeholder={value}
+// //                   name={value}
+// //                   id={value}
+// //                   required
+// //                />
+// //             </div>
+// //          ))}
+// //       </div>
+// //    </form>
+// // );

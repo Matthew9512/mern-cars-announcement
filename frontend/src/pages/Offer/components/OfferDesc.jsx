@@ -1,7 +1,6 @@
-import { formatRelative } from 'date-fns';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { formatResData, getLS } from '../../../utils/helpers';
+import { formatResData, formatTime, getLS } from '../../../utils/helpers';
 import FollowButton from '../../../ui/FollowButton';
 
 /**
@@ -40,9 +39,7 @@ function OfferDetils({ data }) {
    return (
       <>
          <div className='flex items-center justify-between my-4 w-[20em]'>
-            <p className='first-letter:uppercase'>
-               {formatRelative(new Date(created), new Date(), { addSuffix: true })}
-            </p>
+            <p className='first-letter:uppercase'>{formatTime(created)}</p>
             <FollowButton
                item={data}
                handleFollow={handleFollow}
