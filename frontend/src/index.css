@@ -31,27 +31,43 @@ html {
 .shape {
    border-radius: 91% 9% 0% 100% / 73% 0% 100% 27%;
 }
-.loader {
-   width: 50px;
-   padding: 6px;
-   aspect-ratio: 1;
-   border-radius: 50%;
-   background: #242929;
-   --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
-   -webkit-mask: var(--_m);
-   mask: var(--_m);
-   -webkit-mask-composite: source-out;
-   mask-composite: subtract;
-   animation: s3 1s infinite linear;
-}
-@keyframes s3 {
-   to {
-      transform: rotate(1turn);
-   }
-}
 .no-data {
    background: url('../no-offer.png') center no-repeat;
    background-size: contain;
+}
+.svg-loader {
+   width: 3.25em;
+   transform-origin: center;
+   animation: rotate4 2s linear infinite;
+}
+.circle-loader {
+   fill: none;
+   stroke: hsl(214, 97%, 59%);
+   stroke-width: 3;
+   stroke-dasharray: 1, 200;
+   stroke-dashoffset: 0;
+   stroke-linecap: round;
+   animation: dash4 1.5s ease-in-out infinite;
+}
+@keyframes rotate4 {
+   100% {
+      transform: rotate(360deg);
+   }
+}
+@keyframes dash4 {
+   0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+   }
+
+   50% {
+      stroke-dasharray: 90, 200;
+      stroke-dashoffset: -35px;
+   }
+
+   100% {
+      stroke-dashoffset: -125px;
+   }
 }
 
 /*  */

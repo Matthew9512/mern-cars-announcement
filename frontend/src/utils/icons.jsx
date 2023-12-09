@@ -12,6 +12,7 @@ import {
    AiFillHeart,
 } from 'react-icons/ai';
 import { FcNext, FcPrevious } from 'react-icons/fc';
+import { IoSend } from 'react-icons/io5';
 
 export const carIcon = <FaCar style={{ color: '#2B59FF', height: '22px', width: '22px' }} />;
 export const searchIcon = <CiSearch style={{ width: '24px', height: '20px' }} />;
@@ -30,3 +31,4 @@ export const personIcon = <BsFillPersonFill style={{ width: '18px', height: '18p
 export const cityIcon = <FaLocationDot style={{ width: '18px', height: '18px' }} />;
 export const nextIcon = <FcNext style={{ width: '26px', height: '26px' }} />;
 export const prevIcon = <FcPrevious style={{ width: '26px', height: '26px' }} />;
+export const sendIcon = <IoSend />;

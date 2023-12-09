@@ -83,22 +83,3 @@ function UsersAnnouncement() {
 }
 
 export default UsersAnnouncement;
-
-// if (click === 'Deactivate') {
-//    mutateOfferStatus({
-//       endpoint: `/user/deactivate-offer`,
-//       body: { offerID },
-//    });
-// }
-// if (click === 'Activate') {
-//    mutateOfferStatus({
-//       endpoint: `/user/activate-offer`,
-//       body: { offerID },
-//    });
-// }
-// if (click === 'Cancle') {
-//    mutateOfferStatus({
-//       endpoint: `/user/remove-offer`,
-//       body: { offerID, userID: user?._id },
-//    });
-// }

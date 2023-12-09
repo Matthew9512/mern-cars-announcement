@@ -60,7 +60,7 @@ const getSearchOffer = async function (req, res, next) {
       if (!queryString?.brand)
          return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
 
-      const pagesAmount = Math.ceil(await carsModel.find(queryString).countDocuments());
+      const pagesAmount = Math.ceil(await carsModel.find(queryString).countDocuments()) / utils._RES_PER_PAGE;
 
       const offer = await carsModel
          .find(queryString)
