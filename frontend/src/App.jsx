@@ -15,7 +15,6 @@ import UsersAnnouncement from './pages/User/components/UsersAnnouncement';
 import UsersPersonalData from './pages/User/components/UsersPersonalData';
 import Messenger from './pages/User/components/Messenger';
 
-// pb-24
 function App() {
    return (
       <main className='max-w-screen-2xl mx-auto min-h-screen relative'>

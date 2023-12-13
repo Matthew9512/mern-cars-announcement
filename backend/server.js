@@ -60,6 +60,11 @@ socketServer.on('connection', (socket) => {
       socketServer.emit('getUsers', users);
    });
 
+   socket.on('typing', ({ reciverId, username }) => {
+      const user = getUser(reciverId);
+      socketServer.to(user?.socketId).emit('isTyping', username);
+   });
+
    socket.on('sendMessage', ({ senderId, reciverId, message }) => {
       const user = getUser(reciverId);
       socketServer.to(user?.socketId).emit('getMessage', {

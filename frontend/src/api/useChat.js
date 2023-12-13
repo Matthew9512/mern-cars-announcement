@@ -40,7 +40,7 @@ export const useCreateMsg = function () {
             false
          ),
 
-      onSuccess: () => queryClient.invalidateQueries(['chat-messages']),
+      // onSuccess: () => queryClient.invalidateQueries(['chat-messages']),
    });
 
    return { createNewMsg, isCreateMsgPending };
@@ -64,13 +64,13 @@ export const useGetChatList = function (userId) {
    return { chatList, isGetChatListPending };
 };
 
-export const useGetChatMsg = function (reciverId, senderId) {
+export const useGetChatMsg = function (reciverId, senderId, page) {
    const { data: currentChatMsg, isLoading: isGetChatMsgPending } = useQuery({
-      queryKey: ['chat-messages', reciverId],
+      queryKey: ['chat-messages', reciverId, page],
       queryFn: () =>
          fetchData(
             {
-               url: `/message/get-chat/${reciverId}`,
+               url: `/message/get-chat/${reciverId}/${page}`,
                method: 'POST',
                data: {
                   senderId,
@@ -79,24 +79,7 @@ export const useGetChatMsg = function (reciverId, senderId) {
             false
          ),
       enabled: !!reciverId && !!senderId,
-      // enabled: reciverId !== undefined && senderId !== undefined,
    });
 
    return { currentChatMsg, isGetChatMsgPending };
 };
-
-// export const useCreateMsg = function () {
-//    const { mutate: createNewMsg, isPending } = useMutation({
-//       mutationFn: (data) =>
-//          fetchData(
-//             {
-//                url: `/message/create`,
-//                method: 'POST',
-//                data,
-//             },
-//             false
-//          ),
-//    });
-
-//    return { createNewMsg, isPending };
-// };

@@ -6,6 +6,7 @@ const chatsSchema = new schema({
    reciverId: String,
    lastMessage: String,
    reciverName: String,
+   senderName: String,
    lastSender: String,
    created: { type: Date, default: Date.now },
 });

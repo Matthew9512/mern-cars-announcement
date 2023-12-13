@@ -1,18 +1,20 @@
 import { generatePath, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Input from '../../../ui/Input';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import ContactItem from './ContactItem';
 import { useGetChatList } from '../../../api/useChat';
 
-function ContactList({ senderId, reciverId, onlineUsers }) {
-   const { chatList, isGetChatListPending } = useGetChatList(senderId);
+const ContactList = memo(function ContactList({ user, reciverId, onlineUsers, resetMessages }) {
+   const { chatList, isGetChatListPending } = useGetChatList(user?._id);
    const [contactList, setContactList] = useState([]);
    const navigate = useNavigate();
 
    const handleCurrentChat = (arr) => {
-      const id = arr?.find((value) => value !== senderId);
+      const id = arr?.find((value) => value !== user?._id);
 
+      // reset page numb for inf scroll and messages array
+      resetMessages();
       navigate(generatePath('/user/messages/:id', { id }));
    };
 
@@ -47,6 +49,7 @@ function ContactList({ senderId, reciverId, onlineUsers }) {
                   chat={chat}
                   handleCurrentChat={handleCurrentChat}
                   reciverId={reciverId}
+                  user={user}
                   onlineUsers={onlineUsers}
                />
             ))
@@ -55,6 +58,6 @@ function ContactList({ senderId, reciverId, onlineUsers }) {
          )}
       </aside>
    );
-}
+});
 
 export default ContactList;

@@ -2,18 +2,27 @@ const chatModel = require('../models/chatsModel');
 const messageModel = require('../models/messageModel');
 const usersModel = require('../models/usersModel');
 
+const utils = require('../utils/constants');
+
 const getChatMessages = async function (req, res, next) {
    try {
       const { senderId } = req.body;
-      const { id } = req.params;
+      const { id, page } = req.params;
+
+      // total amount of messages
+      const pagesAmount = await messageModel.find({
+         members: { $all: [senderId, id] },
+      });
 
       const find = await messageModel
          .find({
             members: { $all: [senderId, id] },
          })
-         .sort({ created: -1 });
+         .sort({ created: -1 })
+         .limit(utils._RES_PER_PAGE)
+         .skip((page - 1) * utils._RES_PER_PAGE);
 
-      res.status(200).json(find);
+      res.status(200).json({ find, pagesAmount: Math.ceil(pagesAmount.length / utils._RES_PER_PAGE) });
    } catch (error) {
       next(error.message);
       console.log(error);
@@ -32,22 +41,11 @@ const createNewMessage = async function (req, res, next) {
 
       // find name of reciver
       const lastSender = await usersModel.findById(senderId).select('username');
-      // ==========
+
       await chatModel.findOneAndUpdate(
          { members: { $all: [senderId, reciverId] } },
          { lastSender: lastSender?.username, lastMessage: message, created: new Date() }
       );
-      // const filter = {
-      //    members: { $all: [senderId, reciverId] },
-      // };
-
-      // const update = {
-      //    lastSender: lastSender?.username,
-      //    lastMessage: message,
-      // };
-
-      // await chatModel.findOneAndUpdate(filter, update);
-      // ==========
 
       res.sendStatus(200);
    } catch (error) {

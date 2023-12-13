@@ -21,10 +21,10 @@ function CarCard({ item, disabled = false }) {
                {fuelIcon} {item?.fuel}
             </span>
             <span className='flex flex-col items-center gap-2'>
-               {transmissionIcon} {item?.transmitionType}
+               {engineIcon} {(+item?.engineCapacity / 1000).toFixed(1)}
             </span>
             <span className='flex flex-col items-center gap-2'>
-               {engineIcon} {(+item?.engineCapacity / 1000).toFixed(1)}
+               {transmissionIcon} {item?.transmitionType}
             </span>
          </div>
          <LinkButton to={`/offer/${item?._id}`} disabled={disabled} variant='primary' className='ml-[3.7rem] mt-4'>

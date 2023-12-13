@@ -4,7 +4,7 @@ const usersModel = require('../models/usersModel');
 
 const createChat = async function (req, res, next) {
    try {
-      const { senderId, reciverId, message } = req.body;
+      const { senderId, reciverId, message, senderName } = req.body;
 
       // find name of reciver
       const lastSender = await usersModel.findById(reciverId).select('username');
@@ -13,6 +13,7 @@ const createChat = async function (req, res, next) {
          members: [senderId, reciverId],
          reciverId,
          reciverName: lastSender?.username,
+         senderName,
          lastSender: lastSender?.username,
          lastMessage: message,
       });
