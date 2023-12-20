@@ -1,68 +1,45 @@
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useContext, useEffect, useState } from 'react';
 import UsersNavbar from './UsersNavbar';
 import ContactList from './ContactList';
 import Conversation from './Conversation';
 import { UserContext } from '../../../context/userContext';
 import MessagesForm from './MessagesForm';
+import { MessagesContext } from '../../../context/messagesContext';
 
 function Messenger() {
    const { id } = useParams();
    const { user } = useContext(UserContext);
-   const socket = useRef();
-   const [onlineUsers, setOnlineUsers] = useState(null);
-   const [arrivalMessage, setArrivalMessage] = useState(null);
-   const [whosTyping, setWhosTyping] = useState('');
-
+   const { socket } = useContext(MessagesContext);
+   const [whosTyping, setWhosTyping] = useState(false);
    const [messages, setMessages] = useState([]);
    let [page, setPage] = useState(1);
 
-   // prevent
+   // reset states to prevent displaying wrong messages
    const resetMessages = () => {
       setMessages([]);
       setPage(1);
    };
 
    useEffect(() => {
-      socket.current = io('ws://localhost:8000');
-      socket.current.on('getMessage', (data) => {
-         setArrivalMessage({
-            senderId: data.senderId,
-            message: data.message,
-            created: new Date(Date.now()).toISOString(),
+      if (socket.current)
+         socket.current.on('isTyping', (user) => {
+            setWhosTyping({ username: user?.username, reciverId: user?.reciverId });
+            setTimeout(() => {
+               setWhosTyping(false);
+            }, 2000);
          });
-      });
-   }, []);
-
-   useEffect(() => {
-      if (!user) return;
-
-      socket.current.emit('addUser', user?._id);
-      socket.current.on('getUsers', (users) => {
-         setOnlineUsers(users);
-      });
-   }, [user]);
-
-   useEffect(() => {
-      socket.current.on('isTyping', (username) => {
-         setWhosTyping(username);
-         setTimeout(() => {
-            setWhosTyping('');
-         }, 2000);
-      });
-   }, []);
+   }, [socket]);
 
    return (
       <section className='bg-secondary-white pt-8 relative'>
          <UsersNavbar />
          <article className='lg:w-4/5 w-full h-[70vh] mx-auto flex'>
-            <ContactList reciverId={id} user={user} onlineUsers={onlineUsers} resetMessages={resetMessages} />
+            <ContactList reciverId={id} user={user} resetMessages={resetMessages} />
             <div className='flex-grow relative px-2'>
                <Conversation
                   reciverId={id}
                   user={user}
-                  arrivalMessage={arrivalMessage}
                   messages={messages}
                   setMessages={setMessages}
                   page={page}

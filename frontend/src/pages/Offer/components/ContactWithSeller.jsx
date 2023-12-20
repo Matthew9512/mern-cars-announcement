@@ -26,7 +26,7 @@ function ContactWithSeller({ sellerData, sellerId }) {
                {cityIcon}
                {sellerData?.city}
             </p>
-            <LinkButton to={`/user/messages/${sellerId}`} disabled={!data?._id} variant='primary'>
+            <LinkButton to={`/user/messages/${sellerId}`} disabled={!data?.user?._id} variant='primary'>
                Chat with seller
             </LinkButton>
          </div>

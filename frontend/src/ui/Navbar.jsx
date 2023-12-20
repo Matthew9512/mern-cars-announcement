@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { carIcon } from '../utils/icons';
 import LinkButton from './LinkButton';
 import { jwtDecodeToken } from '../api/axiosHelper';
+import { MessagesContext } from '../context/messagesContext';
 
 function Navbar() {
    const [isLogged, setIsLogged] = useState(jwtDecodeToken);
    const location = useLocation();
+   const { newMessageNotifyDot } = useContext(MessagesContext);
 
    return (
       <nav className='flex justify-between items-center w-full py-2 px-8'>
@@ -22,8 +24,9 @@ function Navbar() {
                   + Add New
                </LinkButton>
             )}
-            <LinkButton variant='primary' to={isLogged ? 'user' : 'login'} className='ml-4'>
+            <LinkButton variant='primary' to={isLogged ? 'user' : 'login'} className='ml-4 relative'>
                {isLogged ? isLogged?.username : 'Login'}
+               <span className={`${newMessageNotifyDot >= 1 ? 'notificationDot' : ''}`}></span>
             </LinkButton>
          </div>
       </nav>

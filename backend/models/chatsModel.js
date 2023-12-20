@@ -8,6 +8,8 @@ const chatsSchema = new schema({
    reciverName: String,
    senderName: String,
    lastSender: String,
+   reciverSeen: { type: Boolean, default: false },
+   senderSeen: { type: Boolean, default: false },
    created: { type: Date, default: Date.now },
 });
 

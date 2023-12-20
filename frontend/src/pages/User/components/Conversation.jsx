@@ -1,18 +1,12 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useContext, useEffect, useRef } from 'react';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import Message from './Message';
 import { useGetChatMsg } from '../../../api/useChat';
 import { useOnScreen } from '../../../api/useOnScreen';
+import { MessagesContext } from '../../../context/messagesContext';
 
-const Conversation = memo(function Conversation({
-   reciverId,
-   user,
-   arrivalMessage,
-   messages,
-   setMessages,
-   page,
-   setPage,
-}) {
+const Conversation = memo(function Conversation({ reciverId, user, messages, setMessages, page, setPage }) {
+   const { arrivalMessage } = useContext(MessagesContext);
    const infScrollEle = useRef(null);
    const isOnScreen = useOnScreen(infScrollEle);
    const { currentChatMsg, isGetChatMsgPending } = useGetChatMsg(reciverId, user?._id, page);
@@ -23,7 +17,7 @@ const Conversation = memo(function Conversation({
 
       setMessages((prev) => [...prev, ...currentChatMsg.find]);
    }, [currentChatMsg]);
-
+   console.log(arrivalMessage);
    // display messages coming from socket and display proper message to current reciver
    useEffect(() => {
       arrivalMessage &&
@@ -46,7 +40,7 @@ const Conversation = memo(function Conversation({
          {isGetChatMsgPending && <LoadingSpinner />}
          <div id='scrollEle' className='h-4/5 pr-1 pb-4 overflow-y-scroll overflow-hidden flex flex-col-reverse'>
             {messages.length ? (
-               messages.map((msg) => <Message key={msg?.created} msg={msg} senderId={user?._id} />)
+               messages.map((msg) => <Message key={msg?._id} msg={msg} senderId={user?._id} />)
             ) : (
                <p className='text-center pb-16'>Choose contact to start a conversation or start chat with seller</p>
             )}

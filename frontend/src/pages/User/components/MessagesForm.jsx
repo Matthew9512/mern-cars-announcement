@@ -59,11 +59,11 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
          )
       );
 
-      let scrollEle = document.querySelector('#scrollEle');
-      scrollEle.scrollTop = scrollEle.scrollHeight;
-
       formRef.current.value = '';
       setDisabledSendBtn(false);
+
+      let scrollEle = document.querySelector('#scrollEle');
+      scrollEle.scrollTop = scrollEle.scrollHeight;
    };
 
    return (
@@ -73,7 +73,7 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
          className='mx-auto h-1/5 w-96 flex-center gap-2 relative'
       >
          <p className='italic absolute -top-10 -left-3 p-4 text-sm text-primary-grey'>
-            {whosTyping && `${whosTyping} typing...`}
+            {whosTyping && `${whosTyping?.username} typing...`}
          </p>
          <textarea
             disabled={!reciverId}

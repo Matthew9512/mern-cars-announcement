@@ -4,7 +4,6 @@ import { formatTime } from '../../../utils/helpers';
 function Message({ msg, senderId }) {
    return (
       <div className={`flex my-2 ${msg?.senderId === senderId ? 'justify-end' : 'justify-start'} `}>
-         {/* <div ref={scrollRef} className={`flex my-2 ${msg?.senderId === senderId ? 'justify-end' : 'justify-start'} `}> */}
          <div className={`grid grid-cols-[2rem,80%] gap-2 place-items-start`}>
             <div className='h-8 border border-primary-grey rounded-full'>
                <Image src='/404-robot-com.jpg' className='rounded-full' alt='contact image' />

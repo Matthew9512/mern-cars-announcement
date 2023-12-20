@@ -9,6 +9,7 @@ const io = require('socket.io');
 const corsOptions = require('./config/corsOptions');
 const connectDB = require('./config/mongoDb');
 const errorHandler = require('./middleware/errorHandler');
+const usersModel = require('./models/usersModel');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -36,6 +37,7 @@ const expressServer = app.listen(PORT, () => {
 const socketServer = new io.Server(expressServer, {
    cors: {
       origin: 'http://127.0.0.1:5173',
+      // http://127.0.0.1:4173
    },
 });
 
@@ -62,14 +64,18 @@ socketServer.on('connection', (socket) => {
 
    socket.on('typing', ({ reciverId, username }) => {
       const user = getUser(reciverId);
-      socketServer.to(user?.socketId).emit('isTyping', username);
+      socketServer.to(user?.socketId).emit('isTyping', { username, reciverId });
+      // socketServer.to(user?.socketId).emit('isTyping', username);
    });
 
-   socket.on('sendMessage', ({ senderId, reciverId, message }) => {
+   socket.on('sendMessage', async ({ senderId, reciverId, message }) => {
       const user = getUser(reciverId);
+      await usersModel.findByIdAndUpdate(reciverId, { seenChats: false });
+
       socketServer.to(user?.socketId).emit('getMessage', {
          senderId,
          message,
+         reciverId,
       });
    });
 

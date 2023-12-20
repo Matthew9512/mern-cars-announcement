@@ -85,3 +85,34 @@ html {
    border: 2px solid rgb(210, 208, 208);
    outline: none;
 }
+.newMessage {
+   font-weight: bold;
+}
+.newMessageRemove {
+   font-weight: normal;
+}
+/* ====== */
+.notificationDot {
+   position: absolute;
+   top: 0;
+   height: 16px;
+   width: 16px;
+   border-radius: 50%;
+   background-color: red;
+   color: red;
+   outline: 2px solid red;
+   border: 2px solid red;
+   outline-offset: -2px;
+   animation: pulse 800ms ease-in-out infinite;
+}
+
+@keyframes pulse {
+   0% {
+      outline: 0px solid red;
+      outline-offset: 0px;
+   }
+   50% {
+      outline: 2px solid red;
+      outline-offset: 2px;
+   }
+}

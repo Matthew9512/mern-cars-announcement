@@ -6,5 +6,9 @@ export const UserContext = createContext({});
 export const UserContextProvider = ({ children }) => {
    const { data: user, isPending, error } = useGetUser();
 
-   return <UserContext.Provider value={{ user, isPending, error }}>{children}</UserContext.Provider>;
+   return (
+      <UserContext.Provider value={{ user: user?.user, unseenChats: user?.unseenChats, isPending, error }}>
+         {children}
+      </UserContext.Provider>
+   );
 };

@@ -38,9 +38,3 @@ export const formatResData = function (resData) {
 export const getLS = function () {
    return localStorage.getItem('car__ads') ? JSON.parse(localStorage.getItem('car__ads')) : [];
 };
-// export const formatPrice = function (price) {
-//    return new Intl.NumberFormat('en-EN', {
-//       style: 'currency',
-//       currency: 'EUR',
-//    }).format(price);
-// };

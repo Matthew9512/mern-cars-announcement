@@ -1,20 +1,29 @@
-import { generatePath, useNavigate } from 'react-router-dom';
-import { memo, useEffect, useState } from 'react';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { memo, useContext, useEffect, useState } from 'react';
 import Input from '../../../ui/Input';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import ContactItem from './ContactItem';
 import { useGetChatList } from '../../../api/useChat';
+import { MessagesContext } from '../../../context/messagesContext';
+import { useQueryClient } from '@tanstack/react-query';
 
-const ContactList = memo(function ContactList({ user, reciverId, onlineUsers, resetMessages }) {
+const ContactList = memo(function ContactList({ user, reciverId, resetMessages }) {
+   const { arrivalMessage, onlineUsers, setArrivalMessage, setNewMessageNotifyDot } = useContext(MessagesContext);
    const { chatList, isGetChatListPending } = useGetChatList(user?._id);
    const [contactList, setContactList] = useState([]);
    const navigate = useNavigate();
+   const { id: paramsId } = useParams();
+   const queryClient = useQueryClient();
 
-   const handleCurrentChat = (arr) => {
+   const handleCurrentChat = (setStyleNewMessage, arr) => {
       const id = arr?.find((value) => value !== user?._id);
-
+      if (paramsId === id) return;
       // reset page numb for inf scroll and messages array
       resetMessages();
+      // handle notification dot
+      setNewMessageNotifyDot((prev) => prev - 1);
+      // remove bold text style from unreaded message
+      chatList.find((user) => user?.members.includes(id)) && setStyleNewMessage(false);
       navigate(generatePath('/user/messages/:id', { id }));
    };
 
@@ -32,6 +41,14 @@ const ContactList = memo(function ContactList({ user, reciverId, onlineUsers, re
 
       setContactList(chatList);
    }, [chatList]);
+
+   useEffect(() => {
+      if (!arrivalMessage) return;
+
+      if (contactList.find((c) => c.members.includes(arrivalMessage.reciverId))) return;
+      console.log('invalidate');
+      queryClient.invalidateQueries(['chat-list']);
+   }, [arrivalMessage]);
 
    return (
       <aside className='flex flex-col items-start overflow-auto border-r border-r-primary-grey/70 sm:w-96 w-26 relative px-2'>
@@ -51,6 +68,8 @@ const ContactList = memo(function ContactList({ user, reciverId, onlineUsers, re
                   reciverId={reciverId}
                   user={user}
                   onlineUsers={onlineUsers}
+                  arrivalMessage={arrivalMessage}
+                  setArrivalMessage={setArrivalMessage}
                />
             ))
          ) : (

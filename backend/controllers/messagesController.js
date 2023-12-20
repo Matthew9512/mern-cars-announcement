@@ -8,6 +8,16 @@ const getChatMessages = async function (req, res, next) {
    try {
       const { senderId } = req.body;
       const { id, page } = req.params;
+      // mark messages as readed
+
+      const findChat = await chatModel.find({
+         members: { $all: [senderId, id] },
+      });
+
+      // mark chat as readed if user is the one who recives messages
+      if (senderId === findChat.at(0)?.reciverId) {
+         await chatModel.findOneAndUpdate({ members: { $all: [senderId, id] } }, { reciverSeen: true }, { new: true });
+      }
 
       // total amount of messages
       const pagesAmount = await messageModel.find({
@@ -44,7 +54,7 @@ const createNewMessage = async function (req, res, next) {
 
       await chatModel.findOneAndUpdate(
          { members: { $all: [senderId, reciverId] } },
-         { lastSender: lastSender?.username, lastMessage: message, created: new Date() }
+         { lastSender: lastSender?.username, lastMessage: message, created: new Date(), reciverId, reciverSeen: false }
       );
 
       res.sendStatus(200);
