@@ -62,10 +62,10 @@ socketServer.on('connection', (socket) => {
       socketServer.emit('getUsers', users);
    });
 
-   socket.on('typing', ({ reciverId, username }) => {
+   socket.on('typing', ({ reciverId, senderId, username }) => {
       const user = getUser(reciverId);
-      socketServer.to(user?.socketId).emit('isTyping', { username, reciverId });
-      // socketServer.to(user?.socketId).emit('isTyping', username);
+      socketServer.to(user?.socketId).emit('isTyping', { username, senderId });
+      // socketServer.to(user?.socketId).emit('isTyping', { username, senderId, reciverId });
    });
 
    socket.on('sendMessage', async ({ senderId, reciverId, message }) => {

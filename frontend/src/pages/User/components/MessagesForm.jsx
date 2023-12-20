@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import LoadingButton from '../../../ui/LoadingButton';
 import { sendIcon } from '../../../utils/icons';
 import { useCreateChat, useCreateMsg } from '../../../api/useChat';
@@ -20,7 +21,7 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
       if (formRef.current.value.trim().length <= 1) return;
 
       // send typing signal
-      socket.current.emit('typing', { reciverId, username: user?.username });
+      socket.current.emit('typing', { reciverId, senderId: user?._id, username: user?.username });
 
       if (e.code === 'Enter') {
          e.preventDefault();
@@ -54,16 +55,19 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
       });
 
       setMessages((prev) =>
-         [...prev, { message: newMsg, created: new Date(Date.now()).toISOString(), senderId: user?._id }].sort((a, b) =>
-            a.created > b.created ? -1 : b.created > a.created ? 1 : 0
-         )
+         [
+            ...prev,
+            { message: newMsg, created: new Date(Date.now()).toISOString(), senderId: user?._id, _id: uuidv4() },
+         ].sort((a, b) => (a.created > b.created ? -1 : b.created > a.created ? 1 : 0))
       );
 
       formRef.current.value = '';
       setDisabledSendBtn(false);
 
-      let scrollEle = document.querySelector('#scrollEle');
-      scrollEle.scrollTop = scrollEle.scrollHeight;
+      setTimeout(() => {
+         let scrollEle = document.querySelector('#scrollEle');
+         scrollEle.scrollTop = scrollEle.scrollHeight;
+      }, 200);
    };
 
    return (
@@ -73,7 +77,7 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
          className='mx-auto h-1/5 w-96 flex-center gap-2 relative'
       >
          <p className='italic absolute -top-10 -left-3 p-4 text-sm text-primary-grey'>
-            {whosTyping && `${whosTyping?.username} typing...`}
+            {whosTyping && whosTyping?.senderId === reciverId && `${whosTyping?.username} typing...`}
          </p>
          <textarea
             disabled={!reciverId}

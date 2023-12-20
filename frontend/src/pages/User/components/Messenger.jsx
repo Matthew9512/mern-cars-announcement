@@ -24,7 +24,8 @@ function Messenger() {
    useEffect(() => {
       if (socket.current)
          socket.current.on('isTyping', (user) => {
-            setWhosTyping({ username: user?.username, reciverId: user?.reciverId });
+            setWhosTyping({ username: user?.username, senderId: user?.senderId });
+            // setWhosTyping({ username: user?.username, senderId: user?.senderId, reciverId: user?.reciverId });
             setTimeout(() => {
                setWhosTyping(false);
             }, 2000);

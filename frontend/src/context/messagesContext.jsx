@@ -39,14 +39,6 @@ export const MessagesContextProvider = ({ children }) => {
          setOnlineUsers(users.filter((u) => u.userId !== user?._id));
       });
    }, [user]);
-   // useEffect(() => {
-   //    if (!user) return;
-
-   //    socket.current.emit('addUser', user?._id);
-   //    socket.current.on('getUsers', (users) => {
-   //       setOnlineUsers(users);
-   //    });
-   // }, [user]);
 
    useEffect(() => {
       if (!user) return;

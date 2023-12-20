@@ -17,7 +17,7 @@ const Conversation = memo(function Conversation({ reciverId, user, messages, set
 
       setMessages((prev) => [...prev, ...currentChatMsg.find]);
    }, [currentChatMsg]);
-   console.log(arrivalMessage);
+
    // display messages coming from socket and display proper message to current reciver
    useEffect(() => {
       arrivalMessage &&
