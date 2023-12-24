@@ -2,15 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useGetOffer } from '../../api/useOffer';
 import OfferImages from './components/OfferImages';
-import OfferDetils from './components/OfferDesc';
+import OfferDetils from './components/OfferDetils';
 import ContactWithSeller from './components/ContactWithSeller';
 import NoOfferFound from './components/NoOfferFound';
 import LoadingSpinner from '../../ui/LoadingSpinner';
 import MainDetails from './components/MainDetails';
-
-/**
- * @todo follow
- */
 
 function Offer() {
    const { id } = useParams();

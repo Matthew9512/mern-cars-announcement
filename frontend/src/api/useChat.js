@@ -1,9 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { fetchData } from './fetchData';
-import { jwtDecodeToken, removeToken } from './axiosHelper';
-
-const decoded = jwtDecodeToken();
 
 export const useCreateChat = function () {
    const queryClient = useQueryClient();
@@ -15,20 +12,16 @@ export const useCreateChat = function () {
                method: 'POST',
                data,
             },
-            false
+            true
          ),
       onSuccess: () => queryClient.invalidateQueries(['chat-list']),
-
-      onError: (data) => {
-         toast.error(data?.message);
-      },
+      onError: (err) => toast.error(err?.message),
    });
 
    return { createChat, isPending };
 };
 
 export const useCreateMsg = function () {
-   const queryClient = useQueryClient();
    const { mutate: createNewMsg, isPending: isCreateMsgPending } = useMutation({
       mutationFn: (data) =>
          fetchData(
@@ -40,7 +33,7 @@ export const useCreateMsg = function () {
             false
          ),
 
-      // onSuccess: () => queryClient.invalidateQueries(['chat-messages']),
+      onError: (err) => toast.error(err?.message),
    });
 
    return { createNewMsg, isCreateMsgPending };
@@ -56,7 +49,7 @@ export const useGetChatList = function (userId) {
                method: 'POST',
                data: { userId },
             },
-            false
+            true
          ),
       enabled: !!userId,
    });
@@ -76,7 +69,7 @@ export const useGetChatMsg = function (reciverId, senderId, page) {
                   senderId,
                },
             },
-            false
+            true
          ),
       enabled: !!reciverId && !!senderId,
    });

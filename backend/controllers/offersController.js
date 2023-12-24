@@ -79,34 +79,3 @@ const getSearchOffer = async function (req, res, next) {
 };
 
 module.exports = { addNewOffer, getOffer, getFeaturesOffer, getSearchOffer };
-
-// const getSearchOffer = async function (req, res, next) {
-//    try {
-//       const { brand, model, fuel, year, page } = req.query;
-
-//       console.log(page);
-//       let searchQuery = { brand };
-
-//       if (!brand) return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
-//       if (model && model !== 'all') searchQuery.model = model;
-//       if (fuel && fuel !== 'all') searchQuery.fuel = fuel;
-//       if (year && year !== 'all') searchQuery.year = year;
-
-//       const pagesAmount = Math.ceil(await carsModel.find(searchQuery).countDocuments());
-
-//       const offer = await carsModel
-//          .find(searchQuery)
-//          .limit(utils._RES_PER_PAGE)
-//          .skip((page - 1) * utils._RES_PER_PAGE);
-
-//       console.log(pagesAmount);
-
-//       if (!offer.length)
-//          return res.status(404).json({ message: `Looks like we don't have an offers that can match your criteria` });
-
-//       res.status(200).json({ offer, pagesAmount });
-//    } catch (error) {
-//       next(error.message);
-//       console.log(error.message);
-//    }
-// };

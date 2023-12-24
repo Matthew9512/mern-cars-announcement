@@ -7,11 +7,28 @@ export const MessagesContext = createContext({});
 
 export const MessagesContextProvider = ({ children }) => {
    const { user, unseenChats } = useContext(UserContext);
-   let socket = useRef(io('ws://localhost:8000'));
+   let socket = useRef(
+      io('ws://localhost:8800', {
+         reconnectionAttempts: 2,
+      })
+   );
    const [newMessageNotifyDot, setNewMessageNotifyDot] = useState(0);
    const [onlineUsers, setOnlineUsers] = useState(null);
    const [arrivalMessage, setArrivalMessage] = useState(null);
+   // ===
+   // const socket = io({
+   //    auth: {
+   //      token: "abcd"
+   //    }
+   //  });
 
+   //  // or with a function
+   //  const socket = io({
+   //    auth: (cb) => {
+   //      cb({ token: localStorage.token })
+   //    }
+   //  });
+   // ===
    useEffect(() => {
       socket.current.on('getMessage', (data) => {
          const id = window.location.pathname;

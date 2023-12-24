@@ -37,7 +37,7 @@ function Messenger() {
          <UsersNavbar />
          <article className='lg:w-4/5 w-full h-[70vh] mx-auto flex'>
             <ContactList reciverId={id} user={user} resetMessages={resetMessages} />
-            <div className='flex-grow relative px-2'>
+            <div className='flex-grow relative px-2 w-full'>
                <Conversation
                   reciverId={id}
                   user={user}

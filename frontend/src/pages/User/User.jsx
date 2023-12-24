@@ -15,9 +15,15 @@ function User() {
 
    return (
       <section className='bg-secondary-white pt-8 min-h-[85vh] relative'>
-         {/* <section className='bg-secondary-white pt-8 min-h-[16em]  relative'> */}
          <UsersNavbar />
-         <Modal display={display} setDisplay={setDisplay} item='account' fetchQuery={deleteAcc} params={null} />
+         <Modal
+            display={display}
+            setDisplay={setDisplay}
+            item='account'
+            action='delete'
+            fetchQuery={deleteAcc}
+            params={null}
+         />
          {isPending && <LoadingSpinner />}
          {user ? (
             <div className='text-center space-y-4 space-x-4'>

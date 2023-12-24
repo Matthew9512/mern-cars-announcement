@@ -87,6 +87,7 @@ export const useGetUser = function () {
             true
          );
       },
+      enabled: !!decoded?.id,
    });
 
    return { data, isPending, error };

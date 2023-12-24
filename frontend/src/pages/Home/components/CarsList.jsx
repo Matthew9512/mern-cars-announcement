@@ -22,7 +22,6 @@ function CarsList() {
                   </Empty>
                </div>
             )}
-            {/* {error && <p className='col-span-full'>{error?.message}</p>} */}
             <p>SEE MORE BTN FOR FEATURES</p>
             {data && data?.offer.map((item) => <CarCard key={item?._id} item={item} />)}
          </section>

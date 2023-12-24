@@ -5,7 +5,6 @@ function UsersNavbar() {
    const { pathname } = useLocation();
 
    return (
-      // mb-16
       <div className='flex justify-center items-center mx-auto gap-8 border-b border-b-secondary-grey/60 w-max mb-8'>
          <LinkButton to='/user' variant={pathname === '/user' ? 'nav-link' : ''}>
             My profile

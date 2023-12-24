@@ -1,42 +1,56 @@
-// const server = require('../server');
+const io = require('socket.io');
+const usersModel = require('../models/usersModel');
 
-// let users = [];
+const socketServer = new io.Server(8800, {
+   cors: {
+      origin: 'http://127.0.0.1:5173',
+      // http://127.0.0.1:4173
+   },
+});
 
-// const addUser = (userId, socketId) => {
-//    !users.some((user) => user.userId === userId) && users.push({ userId, socketId });
-// };
+let users = [];
 
-// const removeUser = (socketId) => {
-//    users = users.filter((user) => user.socketId !== socketId);
-// };
+const addUser = (userId, socketId) => {
+   !users.some((user) => user.userId === userId) && users.push({ userId, socketId });
+};
 
-// const getUser = (userId) => {
-//    return users.find((user) => user.userId === userId);
-// };
+const removeUser = (socketId) => {
+   users = users.filter((user) => user.socketId !== socketId);
+};
 
-// server.socketServer.on('connection', (socket) => {
-//    console.log('connected');
-//    //take userId and socketId from user
-//    socket.on('addUser', (userId) => {
-//       console.log(userId);
-//       addUser(userId, socket.id);
-//       server.socketServer.emit('getUsers', users);
-//    });
+const getUser = (userId) => {
+   return users.find((user) => user.userId === userId);
+};
 
-//    socket.on('sendMessage', ({ senderId, reciverId, message }) => {
-//       console.log(message);
-//       const user = getUser(reciverId);
-//       console.log(user);
-//       server.socketServer.to(user?.socketId).emit('getMessage', {
-//          senderId,
-//          message,
-//       });
-//    });
+socketServer.on('connection', (socket) => {
+   //take userId and socketId from user
+   socket.on('addUser', (userId) => {
+      addUser(userId, socket.id);
+      socketServer.emit('getUsers', users);
+   });
 
-//    //when disconnect
-//    socket.on('disconnect', () => {
-//       console.log('a user disconnected!');
-//       removeUser(socket?.id);
-//       server.socketServer.emit('getUsers', users);
-//    });
-// });
+   // send typing message
+   socket.on('typing', ({ reciverId, senderId, username }) => {
+      const user = getUser(reciverId);
+      socketServer.to(user?.socketId).emit('isTyping', { username, senderId });
+   });
+
+   socket.on('sendMessage', async ({ senderId, reciverId, message }) => {
+      const user = getUser(reciverId);
+      await usersModel.findByIdAndUpdate(reciverId, { seenChats: false });
+
+      socketServer.to(user?.socketId).emit('getMessage', {
+         senderId,
+         message,
+         reciverId,
+      });
+   });
+
+   //when disconnect
+   socket.on('disconnect', () => {
+      removeUser(socket?.id);
+      socketServer.emit('getUsers', users);
+   });
+});
+
+module.exports = socketServer;

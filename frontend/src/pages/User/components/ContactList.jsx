@@ -8,7 +8,7 @@ import { MessagesContext } from '../../../context/messagesContext';
 import { useQueryClient } from '@tanstack/react-query';
 
 const ContactList = memo(function ContactList({ user, reciverId, resetMessages }) {
-   const { arrivalMessage, onlineUsers, setArrivalMessage, setNewMessageNotifyDot } = useContext(MessagesContext);
+   const { arrivalMessage, onlineUsers, setNewMessageNotifyDot } = useContext(MessagesContext);
    const { chatList, isGetChatListPending } = useGetChatList(user?._id);
    const [contactList, setContactList] = useState([]);
    const navigate = useNavigate();
@@ -49,9 +49,9 @@ const ContactList = memo(function ContactList({ user, reciverId, resetMessages }
       console.log('invalidate');
       queryClient.invalidateQueries(['chat-list']);
    }, [arrivalMessage]);
-
+   // md:w-1/5
    return (
-      <aside className='flex flex-col items-start overflow-auto border-r border-r-primary-grey/70 sm:w-96 w-26 relative px-2'>
+      <aside className='flex flex-col items-start overflow-auto border-r border-r-primary-grey/70 sm:w-96 w-[6,5rem] relative px-2'>
          <Input
             onChange={handleSearchContact}
             className='sm:w-full w-12 mx-auto'
@@ -69,7 +69,6 @@ const ContactList = memo(function ContactList({ user, reciverId, resetMessages }
                   user={user}
                   onlineUsers={onlineUsers}
                   arrivalMessage={arrivalMessage}
-                  setArrivalMessage={setArrivalMessage}
                />
             ))
          ) : (

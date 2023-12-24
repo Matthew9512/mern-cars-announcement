@@ -7,7 +7,7 @@ function Button({ children, variant, className, ...props }) {
       secondary: `${mainStyle} bg-primary-white text-primary-blue`,
       'nav-link': `pb-2 px-4 outline-none border-b border-primary-blue text-primary-blue font-semibold`,
    };
-   // disabled:bg-secondary-white
+
    return (
       <button className={twMerge(`${styles[variant]}`, className)} {...props}>
          {children}

@@ -67,7 +67,7 @@ function UploadFile() {
       // clear images arr to remove duplicates
       setFiles([]);
    }, [files]);
-   console.log(sellerData);
+
    return (
       <form onSubmit={handleSubmitForm} className='py-16'>
          <h1 className='font-semibold text-2xl mx-auto pb-8'>Add New Announcement</h1>

@@ -121,7 +121,8 @@ const getUser = async function (req, res, next) {
       const { id } = req.params;
 
       const user = await usersModel.findById(id).select('-password');
-      const unseenChats = (await chatModel.find({ members: { $in: [user?._id] }, reciverSeen: false })).length;
+      const unseenChats = (await chatModel.find({ members: { $in: [user?._id] }, reciverId: id, reciverSeen: false }))
+         .length;
 
       res.status(200).json({ user, unseenChats });
    } catch (error) {
@@ -129,18 +130,6 @@ const getUser = async function (req, res, next) {
       console.log(error.message);
    }
 };
-// const getUser = async function (req, res, next) {
-//    try {
-//       const { id } = req.params;
-
-//       const user = await usersModel.findById(id).select('-password');
-
-//       res.status(200).json(user);
-//    } catch (error) {
-//       next(error.message);
-//       console.log(error.message);
-//    }
-// };
 
 const activateOffer = async function (req, res, next) {
    try {

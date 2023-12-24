@@ -1,9 +1,9 @@
+import { useContext } from 'react';
 import Input from '../../../ui/Input';
 import UsersNavbar from './UsersNavbar';
 import { useUpdateUserData } from '../../../api/useAuth';
 import LoadingButton from '../../../ui/LoadingButton';
 import { UserContext } from '../../../context/userContext';
-import { useContext } from 'react';
 
 function UsersPersonalData() {
    const { user } = useContext(UserContext);
@@ -50,6 +50,3 @@ function UsersPersonalData() {
 }
 
 export default UsersPersonalData;
-{
-   /* <section className='flex-center bg-secondary-white'> */
-}

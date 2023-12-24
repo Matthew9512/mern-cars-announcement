@@ -3,12 +3,12 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { useState } from 'react';
 
 const firebaseConfig = {
-   apiKey: 'AIzaSyARmn-MQrvAp0J3mj5nCTjsjmBdFyvMqFU',
-   authDomain: 'car-ads-22d35.firebaseapp.com',
-   projectId: 'car-ads-22d35',
-   storageBucket: 'car-ads-22d35.appspot.com',
-   messagingSenderId: '56095565397',
-   appId: '1:56095565397:web:6d33a80b8ab20edd7596dc',
+   apiKey: import.meta.env.FIREBASE_apiKey,
+   authDomain: import.meta.env.FIREBASE_authDomain,
+   projectId: import.meta.env.FIREBASE_projectId,
+   storageBucket: import.meta.env.FIREBASE_storageBucket,
+   messagingSenderId: import.meta.env.FIREBASE_messagingSenderId,
+   appId: import.meta.env.FIREBASE_appId,
 };
 
 // Initialize Firebase

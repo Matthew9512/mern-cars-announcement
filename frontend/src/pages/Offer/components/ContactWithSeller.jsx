@@ -1,15 +1,16 @@
 import { useGetUser } from '../../../api/useAuth';
-import LinkButton from '../../../ui/LinkButton';
+import Button from '../../../ui/Button';
 import { cityIcon, personIcon, telIcon } from '../../../utils/icons';
-
-/**
- * deal with toast if no token
- */
 
 function ContactWithSeller({ sellerData, sellerId }) {
    const { data } = useGetUser();
 
-   console.log('deal with toast if no token');
+   const handleChatBtn = () => {
+      if (!sellerId) return;
+      if (!data?.user?._id) return (window.location = '/login');
+      window.location = `/user/messages/${sellerId}`;
+   };
+
    return (
       <>
          <h3 className='font-semibold text-lg lg:mt-4 my-0'>Contact with seller:</h3>
@@ -26,12 +27,16 @@ function ContactWithSeller({ sellerData, sellerId }) {
                {cityIcon}
                {sellerData?.city}
             </p>
-            <LinkButton to={`/user/messages/${sellerId}`} disabled={!data?.user?._id} variant='primary'>
+            <Button onClick={handleChatBtn} variant='primary'>
                Chat with seller
-            </LinkButton>
+            </Button>
          </div>
       </>
    );
 }
 
 export default ContactWithSeller;
+
+// <LinkButton to={`/user/messages/${sellerId}`} disabled={!data?.user?._id} variant='primary'>
+//    Chat with seller
+// </LinkButton>

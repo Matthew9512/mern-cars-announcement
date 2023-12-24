@@ -27,6 +27,8 @@ export const formatResData = function (resData) {
          case 'year':
             resDataCopy['production year'] = value;
             break;
+         case 'active':
+            break;
          default:
             resDataCopy[key] = value;
       }

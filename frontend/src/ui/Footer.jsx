@@ -1,4 +1,5 @@
 import { githubIcon, linkedInIcon } from '../utils/icons';
+
 function Footer() {
    return (
       <footer className='p-4 w-full absolute bottom-0'>

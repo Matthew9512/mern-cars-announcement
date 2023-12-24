@@ -37,13 +37,3 @@ function Modal({ display, setDisplay, item, action, fetchQuery, params }) {
 }
 
 export default Modal;
-// import { createPortal } from 'react-dom';
-
-// function Modal({ children }) {
-//    return createPortal(
-//       <div className='fixed inset-0 bg-primary-black'>{children}</div>,
-//       document.querySelector('#modal-root')
-//    );
-// }
-
-// export default Modal;
