@@ -8,19 +8,19 @@ import App from './App.jsx';
 import './index.css';
 
 const queryClient = new QueryClient({
-   defaultOptions: {
-      queries: {
-         retry: 1,
-      },
-   },
    // defaultOptions: {
    //    queries: {
-   //       refetchOnMount: false,
-   //       refetchOnWindowFocus: false,
-   //       staleTime: Infinity,
    //       retry: 1,
    //    },
    // },
+   defaultOptions: {
+      queries: {
+         refetchOnMount: false,
+         refetchOnWindowFocus: false,
+         staleTime: Infinity,
+         retry: 1,
+      },
+   },
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

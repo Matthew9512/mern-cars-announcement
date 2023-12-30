@@ -1,16 +1,17 @@
 import Image from '../../../ui/Image';
 import { closeIcon } from '../../../utils/icons';
 
-function UploadedImgs({ uploadedImgArr, setUploadedImgArr, filePerc }) {
+function UploadedImgs({ uploadedImgArr, setUploadedImgArr }) {
    const removeImg = (img) => {
       setUploadedImgArr((prev) => {
          return prev.filter((link) => link !== img);
       });
    };
+
    return (
       <>
-         {uploadedImgArr.map((img, i) => (
-            <div key={img} className='flex items-center gap-2 h-24 relative bg-secondary-white'>
+         {uploadedImgArr.map((img) => (
+            <div key={img} className='flex items-center gap-2 h-24 relative bg-secondary-white overflow-hidden'>
                <div className='w-24'>
                   <Image src={img} alt='uploaded car image' />
                </div>

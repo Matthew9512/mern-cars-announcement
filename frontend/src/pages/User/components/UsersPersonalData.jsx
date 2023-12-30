@@ -7,7 +7,7 @@ import { UserContext } from '../../../context/userContext';
 
 function UsersPersonalData() {
    const { user } = useContext(UserContext);
-   const { mutateUserData, isPending } = useUpdateUserData();
+   const { mutateUserData, isPending } = useUpdateUserData(user?._id);
 
    const handleSubmitForm = (e) => {
       e.preventDefault();
@@ -42,7 +42,7 @@ function UsersPersonalData() {
                defaultValue={user?.telNumber}
             />
             <LoadingButton isLoading={isPending} className='mx-auto mt-4'>
-               Create
+               Save
             </LoadingButton>
          </form>
       </section>

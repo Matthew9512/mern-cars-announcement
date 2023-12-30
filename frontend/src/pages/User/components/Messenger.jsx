@@ -28,16 +28,17 @@ function Messenger() {
             // setWhosTyping({ username: user?.username, senderId: user?.senderId, reciverId: user?.reciverId });
             setTimeout(() => {
                setWhosTyping(false);
-            }, 2000);
+            }, 1000);
          });
    }, [socket]);
 
    return (
       <section className='bg-secondary-white pt-8 relative'>
+         {/* <section className='bg-secondary-white pt-8 relative'> */}
          <UsersNavbar />
          <article className='lg:w-4/5 w-full h-[70vh] mx-auto flex'>
             <ContactList reciverId={id} user={user} resetMessages={resetMessages} />
-            <div className='flex-grow relative px-2 w-full'>
+            <div className=' relative px-2 w-full'>
                <Conversation
                   reciverId={id}
                   user={user}

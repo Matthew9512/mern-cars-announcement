@@ -44,7 +44,7 @@ function UsersAnnouncement() {
    };
 
    return (
-      <section className='bg-secondary-white p-8 relative min-h-[85vh]  flex flex-col'>
+      <section className='bg-secondary-white p-8 relative min-h-[85vh]'>
          <Modal
             display={display}
             setDisplay={setDisplay}

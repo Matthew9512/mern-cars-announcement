@@ -6,7 +6,9 @@ import { formatPrice } from '../../../utils/helpers';
 function CarCard({ item, disabled = false }) {
    return (
       <div className='bg-secondary-white p-4 rounded-md w-[16em] group'>
-         <p className='font-semibold mb-3 truncate'>{item?.title}</p>
+         <p className='font-semibold mb-3 truncate capitalize'>
+            {item?.brand} {item?.model}
+         </p>
          <p className='text-2xl'>&euro; {formatPrice(item?.price)}</p>
          <div className='w-56 h-56 my-4 flex-center rounded-md overflow-hidden relative'>
             <Image src={item?.images?.at(0)} alt={`${item?.brand} image`} />

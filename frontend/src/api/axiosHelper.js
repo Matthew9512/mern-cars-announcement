@@ -47,22 +47,24 @@ async function refreshAccessToken() {
       localStorage.setItem('car-access__token', JSON.stringify(newToken));
       return newToken;
    } catch (error) {
-      toast.error('Please log in in order to proceed');
+      toast.error(`Please log in in order to finish`);
       setTimeout(() => {
-         window.location = '/';
-      }, 1200);
+         window.location = '/login';
+      }, 1500);
    }
 }
 
 export function jwtDecodeToken() {
-   const token = localStorage.getItem('car-access__token')
-      ? JSON.parse(localStorage.getItem('car-access__token'))
-      : null;
    let decoded;
-   if (token) {
-      decoded = jwtDecode(token);
+   try {
+      const token = localStorage.getItem('car-access__token')
+         ? JSON.parse(localStorage.getItem('car-access__token'))
+         : null;
+      if (token) {
+         decoded = jwtDecode(token);
+      }
+   } catch (error) {
+      localStorage.removeItem('car-access__token');
    }
-   // if (!decoded) return toast.error(`Please log in in order to finish`);
-   //   } else window.location = '/';
    return decoded;
 }

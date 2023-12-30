@@ -1,23 +1,22 @@
 import { initializeApp } from 'firebase/app';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const firebaseConfig = {
    apiKey: import.meta.env.FIREBASE_apiKey,
-   authDomain: import.meta.env.FIREBASE_authDomain,
-   projectId: import.meta.env.FIREBASE_projectId,
-   storageBucket: import.meta.env.FIREBASE_storageBucket,
-   messagingSenderId: import.meta.env.FIREBASE_messagingSenderId,
-   appId: import.meta.env.FIREBASE_appId,
+   authDomain: 'car-ads-22d35.firebaseapp.com',
+   projectId: 'car-ads-22d35',
+   storageBucket: 'car-ads-22d35.appspot.com',
+   messagingSenderId: '56095565397',
+   appId: '1:56095565397:web:6d33a80b8ab20edd7596dc',
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
 export const useFileUpload = (setUploadedImgArr) => {
-   const [err, setErr] = useState(false);
    const [loading, setLoading] = useState(false);
-   const [filePerc, setFilePerc] = useState(0);
 
    const handleFileUpload = (file) => {
       const storage = getStorage(app);
@@ -27,14 +26,12 @@ export const useFileUpload = (setUploadedImgArr) => {
 
       uploadTask.on(
          'state_changed',
-         (snapshot) => {
+         () => {
             setLoading(true);
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setFilePerc(Math.round(progress));
          },
          (error) => {
-            setErr(true);
             setLoading(false);
+            toast.error(error);
          },
          () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -46,5 +43,5 @@ export const useFileUpload = (setUploadedImgArr) => {
       );
    };
 
-   return { handleFileUpload, filePerc, err, loading };
+   return { handleFileUpload, loading };
 };

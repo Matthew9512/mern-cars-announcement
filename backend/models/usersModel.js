@@ -11,6 +11,7 @@ const usersSchema = new schema({
    telNumber: String,
    announcements: [String],
    seenChats: Boolean,
+   usersAvatar: String,
 });
 
 module.exports = mongoose.model('user', usersSchema);

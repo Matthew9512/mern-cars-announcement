@@ -1,7 +1,6 @@
 const chatModel = require('../models/chatsModel');
 const messageModel = require('../models/messageModel');
 const usersModel = require('../models/usersModel');
-
 const utils = require('../utils/constants');
 
 const getChatMessages = async function (req, res, next) {
@@ -10,12 +9,12 @@ const getChatMessages = async function (req, res, next) {
       const { id, page } = req.params;
       // mark messages as readed
 
-      const findChat = await chatModel.find({
+      const [findChat] = await chatModel.find({
          members: { $all: [senderId, id] },
       });
 
       // mark chat as readed if user is the one who recives messages
-      if (senderId === findChat.at(0)?.reciverId) {
+      if (senderId === findChat?.reciverId) {
          await chatModel.findOneAndUpdate({ members: { $all: [senderId, id] } }, { reciverSeen: true }, { new: true });
       }
 
@@ -29,10 +28,21 @@ const getChatMessages = async function (req, res, next) {
             members: { $all: [senderId, id] },
          })
          .sort({ created: -1 })
-         .limit(utils._RES_PER_PAGE)
-         .skip((page - 1) * utils._RES_PER_PAGE);
+         .limit(utils.MSG_RES_PER_PAGE)
+         .skip((page - 1) * utils.MSG_RES_PER_PAGE);
 
-      res.status(200).json({ find, pagesAmount: Math.ceil(pagesAmount.length / utils._RES_PER_PAGE) });
+      const chatMembers = {
+         senderAvatar: findChat?.senderAvatar,
+         reciverAvatar: findChat?.reciverAvatar,
+         senderName: findChat?.senderName,
+         reciverName: findChat?.reciverName,
+      };
+
+      res.status(200).json({
+         find,
+         chatMembers,
+         pagesAmount: Math.ceil(pagesAmount.length / utils.MSG_RES_PER_PAGE),
+      });
    } catch (error) {
       next(error.message);
       console.log(error);
@@ -54,7 +64,7 @@ const createNewMessage = async function (req, res, next) {
 
       await chatModel.findOneAndUpdate(
          { members: { $all: [senderId, reciverId] } },
-         { lastSender: lastSender?.username, lastMessage: message, created: new Date(), reciverId, reciverSeen: false }
+         { lastSender: lastSender?.username, lastMessage: message, reciverId, created: new Date(), reciverSeen: false }
       );
 
       res.sendStatus(200);

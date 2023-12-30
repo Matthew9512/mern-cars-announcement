@@ -10,7 +10,7 @@ import MainDetails from './components/MainDetails';
 
 function Offer() {
    const { id } = useParams();
-   const { data, isPending, error } = useGetOffer(id);
+   const { data, isPending } = useGetOffer(id);
 
    useEffect(() => {
       scrollTo({
@@ -21,10 +21,9 @@ function Offer() {
    return (
       <section className='px-8 py-16 relative min-h-screen lg:w-4/5 w-full mx-auto flex flex-col'>
          {isPending && <LoadingSpinner />}
-         {error && <NoOfferFound message={error?.message} />}
          {/* offer if no longer active */}
          {!data?.active ? (
-            <NoOfferFound message={'error?.message'} />
+            <NoOfferFound message={'Offer was deleted or is not longer available'} />
          ) : (
             data && (
                <>

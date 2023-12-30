@@ -21,6 +21,9 @@ export default {
          screens: {
             xl: '1360px',
          },
+         boxShadow: {
+            top: 'inset 0 6px 6px -6px rgba(0, 0, 0, 0.295)',
+         },
       },
    },
    plugins: [],

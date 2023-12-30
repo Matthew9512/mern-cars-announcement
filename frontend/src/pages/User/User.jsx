@@ -8,10 +8,10 @@ import Modal from '../../ui/Modal';
 import { UserContext } from '../../context/userContext';
 
 function User() {
+   const { user, isPending } = useContext(UserContext);
    const [display, setDisplay] = useState(false);
-   const { user, isPending, error } = useContext(UserContext);
-   const { logout, logoutLoading } = useLogout();
-   const { deleteAcc, deleteLoading } = useDeleteUser();
+   const { logout, logoutLoading } = useLogout(user?._id);
+   const { deleteAcc, deleteLoading } = useDeleteUser(user?._id);
 
    return (
       <section className='bg-secondary-white pt-8 min-h-[85vh] relative'>

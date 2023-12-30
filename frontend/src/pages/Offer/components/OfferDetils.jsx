@@ -25,12 +25,12 @@ function OfferDetils({ data }) {
       if (value === 'false') {
          lsItems.push(data);
          setFollow(true);
-         toast.success(`Ad has been added to watchlist`);
+         toast.success(`Offer has been added to watchlist`);
       } else {
          lsItems = lsItems.filter((value) => value?._id !== _id);
 
          setFollow(false);
-         toast.success(`You stopped following the selected ad`);
+         toast.success(`You stopped following the selected offer`);
       }
 
       localStorage.setItem('car__ads', JSON.stringify(lsItems));
@@ -38,13 +38,13 @@ function OfferDetils({ data }) {
 
    return (
       <>
-         <div className='flex items-center justify-between my-4 w-[20em]'>
+         <div className='flex items-center justify-between my-4 w-[18em]'>
             <p className='first-letter:uppercase'>{formatTime(created)}</p>
             <FollowButton
                item={data}
                handleFollow={handleFollow}
                follow={follow}
-               position='xl:absolute top-4 right-24'
+               position='xl:absolute top-4 right-20'
             />
          </div>
          <h2 className='font-semibold text-xl first-letter:uppercase py-4'>Details:</h2>

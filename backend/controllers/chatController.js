@@ -7,15 +7,19 @@ const createChat = async function (req, res, next) {
       const { senderId, reciverId, message, senderName } = req.body;
 
       // find name of reciver
-      const lastSender = await usersModel.findById(reciverId).select('username');
+      const reciver = await usersModel.findById(reciverId).select('username usersAvatar');
+      const sender = await usersModel.findById(senderId).select('usersAvatar');
 
       await chatModel.create({
          members: [senderId, reciverId],
          reciverId,
-         reciverName: lastSender?.username,
+         reciverName: reciver?.username,
          senderName,
-         lastSender: lastSender?.username,
+         lastSender: reciver?.username,
          lastMessage: message,
+         reciverAvatar: reciver?.usersAvatar,
+         senderAvatar: sender?.usersAvatar,
+         sellerId: reciverId,
       });
 
       await messageModel.create({

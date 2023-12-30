@@ -5,7 +5,7 @@ function Button({ children, variant, className, ...props }) {
    const styles = {
       primary: `${mainStyle} bg-primary-blue text-primary-white hover:bg-secondary-blue duration-150 disabled:bg-secondary-grey disabled:cursor-not-allowed`,
       secondary: `${mainStyle} bg-primary-white text-primary-blue`,
-      'nav-link': `pb-2 px-4 outline-none border-b border-primary-blue text-primary-blue font-semibold`,
+      'nav-link': `pb-2 outline-none border-b border-primary-blue text-primary-blue font-semibold`,
    };
 
    return (

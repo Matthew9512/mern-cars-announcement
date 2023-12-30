@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Input from '../../../ui/Input';
 import LoadingButton from '../../../ui/LoadingButton';
@@ -8,15 +8,16 @@ import Select from '../../../ui/Select';
 import UploadedImgs from './UploadedImgs';
 import { brandsArr, carBodyTypesArr, fuelsArr } from '../../../utils/constants';
 import { useAddNewOffer } from '../../../api/useOffer';
-import { jwtDecodeToken } from '../../../api/axiosHelper';
 import { useGetSeller } from '../../../api/useAuth';
+import { UserContext } from '../../../context/userContext';
 
 function UploadFile() {
-   const { mutate, isPending } = useAddNewOffer();
-   const { data: sellerData } = useGetSeller();
+   const { user } = useContext(UserContext);
+   const { mutate, isPending } = useAddNewOffer(user?._id);
+   const { data: sellerData } = useGetSeller(user?._id);
    const [files, setFiles] = useState([]);
    const [uploadedImgArr, setUploadedImgArr] = useState([]);
-   const { handleFileUpload, filePerc, err, loading } = useFileUpload(setUploadedImgArr);
+   const { handleFileUpload, loading } = useFileUpload(setUploadedImgArr);
    const uploadRef = useRef();
 
    const handleTransmition = (e) => {
@@ -40,18 +41,16 @@ function UploadFile() {
       const transmitionType = document.querySelector('.activeBtnTransmition').textContent.toLowerCase();
 
       // users id from token
-      const decoded = jwtDecodeToken();
-
-      if (!decoded) return toast.error(`Please log in in order to finish`);
+      if (!user?._id) return toast.error(`Please log in in order to finish`);
       const form = new FormData(e.currentTarget);
 
       // stringifyed version of images links array, parse on backend
       form.append('images', JSON.stringify(uploadedImgArr));
       form.append('transmitionType', transmitionType);
-      form.append('userId', decoded?.id);
+      form.append('sellerId', user?._id);
 
-      const { city, telNumber, contactPerson, ...carData } = Object.fromEntries(form);
-      const sellerData = { city, telNumber, contactPerson };
+      const { city, telNumber, contactPerson, sellerId, ...carData } = Object.fromEntries(form);
+      const sellerData = { city, telNumber, contactPerson, sellerId };
 
       mutate({ carData, sellerData });
    };
@@ -111,11 +110,7 @@ function UploadFile() {
                      Add photos
                   </LoadingButton>
                </div>
-               <UploadedImgs
-                  uploadedImgArr={uploadedImgArr}
-                  setUploadedImgArr={setUploadedImgArr}
-                  filePerc={filePerc}
-               />
+               <UploadedImgs uploadedImgArr={uploadedImgArr} setUploadedImgArr={setUploadedImgArr} />
                <label htmlFor='price'>Price:</label>
                <Input type='number' placeholder='€' name='price' id='price' />
             </div>
@@ -145,8 +140,7 @@ function UploadFile() {
             <label htmlFor='desc'>Car description:</label>
             <textarea
                className='resize-none p-4 rounded-md outline-none'
-               rows={8}
-               // cols={40}
+               rows={6}
                id='desc'
                placeholder='Type the most important informations about your car'
                name='description'

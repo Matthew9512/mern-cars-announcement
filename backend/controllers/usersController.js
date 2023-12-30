@@ -4,6 +4,11 @@ const chatModel = require('../models/chatsModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// create random hex color for chat avatar
+function randomColor() {
+   return '#' + Math.floor(Math.random() * 16777215).toString(16);
+}
+
 const register = async function (req, res, next) {
    try {
       const { password, username, email } = req.body;
@@ -20,6 +25,7 @@ const register = async function (req, res, next) {
          password: bcryptPass,
          email,
          username,
+         usersAvatar: randomColor(),
       });
 
       res.status(200).json({ message: `Account successfully created, welcome ${username}` });

@@ -1,3 +1,4 @@
-const _RES_PER_PAGE = 10;
+const OFFER_RES_PER_PAGE = 1;
+const MSG_RES_PER_PAGE = 15;
 
-module.exports = { _RES_PER_PAGE };
+module.exports = { OFFER_RES_PER_PAGE, MSG_RES_PER_PAGE };

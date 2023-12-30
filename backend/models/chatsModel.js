@@ -11,6 +11,9 @@ const chatsSchema = new schema({
    reciverSeen: { type: Boolean, default: false },
    senderSeen: { type: Boolean, default: false },
    created: { type: Date, default: Date.now },
+   reciverAvatar: String,
+   senderAvatar: String,
+   sellerId: String,
 });
 
 module.exports = mongoose.model('chat', chatsSchema);

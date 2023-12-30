@@ -16,7 +16,6 @@ export async function fetchData(options, auth = false) {
       return data;
    } catch (error) {
       if (error.request.status === 0) return (window.location.href = '/server-down');
-      if (error.request.status === 401 || error.request.status === 403) return (window.location.href = '/');
       throw new Error(error.response.data.message);
    }
 }

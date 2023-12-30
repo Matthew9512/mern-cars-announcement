@@ -15,20 +15,7 @@ export const MessagesContextProvider = ({ children }) => {
    const [newMessageNotifyDot, setNewMessageNotifyDot] = useState(0);
    const [onlineUsers, setOnlineUsers] = useState(null);
    const [arrivalMessage, setArrivalMessage] = useState(null);
-   // ===
-   // const socket = io({
-   //    auth: {
-   //      token: "abcd"
-   //    }
-   //  });
 
-   //  // or with a function
-   //  const socket = io({
-   //    auth: (cb) => {
-   //      cb({ token: localStorage.token })
-   //    }
-   //  });
-   // ===
    useEffect(() => {
       socket.current.on('getMessage', (data) => {
          const id = window.location.pathname;

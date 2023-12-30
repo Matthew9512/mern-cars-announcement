@@ -29,7 +29,7 @@ const carsSchema = new schema({
    created: { type: Date, default: Date.now },
    features: {
       type: Boolean,
-      default: false,
+      default: true,
    },
    active: { type: Boolean, default: true },
    seller: {

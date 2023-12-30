@@ -10,7 +10,7 @@ function NoOfferFound({ message }) {
          <div className='lg:w-[38em] h-[38em]'>
             <Image src='/no-offer.png' />
          </div>
-         <p className='absolute bottom-4 left-1/2 -translate-x-1/2 font-bold'>
+         <p className='absolute bottom-20 left-1/2 -translate-x-1/2 font-bold'>
             <a href='https://storyset.com/data'>
                Data illustrations by <span className='underline'>Storyset</span>
             </a>

@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { fetchData } from './fetchData';
 import { jwtDecodeToken, removeToken } from './axiosHelper';
 
-const decoded = jwtDecodeToken();
-
 export const useRegister = function () {
    const navigate = useNavigate();
    const { mutate, isPending } = useMutation({
@@ -58,58 +56,56 @@ export const useLogin = function () {
    return { mutate, isPending };
 };
 
-export const useGetSeller = function () {
+export const useGetSeller = function (id) {
    const { data } = useQuery({
-      queryKey: ['seller', decoded?.id],
-      queryFn: () => {
-         if (!decoded) return toast.error(`Please log in in order to finish`);
-         return fetchData(
+      queryKey: ['seller', id],
+      queryFn: () =>
+         fetchData(
             {
-               url: `user/seller/${decoded?.id}`,
+               url: `user/seller/${id}`,
             },
             false
-         );
-      },
+         ),
+
+      enabled: !!id,
    });
 
    return { data };
 };
 
 export const useGetUser = function () {
+   const decoded = jwtDecodeToken();
+
    const { data, isPending, error } = useQuery({
       queryKey: ['user', decoded?.id],
-      queryFn: () => {
-         if (!decoded) return toast.error(`Please log in in order to finish`);
-         return fetchData(
+      queryFn: () =>
+         fetchData(
             {
                url: `user/${decoded?.id}`,
             },
             true
-         );
-      },
+         ),
       enabled: !!decoded?.id,
    });
 
    return { data, isPending, error };
 };
 
-export const useUpdateUserData = function () {
+export const useUpdateUserData = function (id) {
    const {
       mutate: mutateUserData,
       isPending,
       error,
    } = useMutation({
-      mutationFn: (data) => {
-         if (!decoded) return toast.error(`Please log in in order to finish`);
-         return fetchData(
+      mutationFn: (data) =>
+         fetchData(
             {
-               url: `user/update-user/${decoded?.id}`,
+               url: `user/update-user/${id}`,
                method: 'PATCH',
                data,
             },
             true
-         );
-      },
+         ),
       onSuccess: (data) => toast.success(data?.message),
       onError: (err) => toast.error(err.message),
    });
@@ -117,17 +113,15 @@ export const useUpdateUserData = function () {
    return { mutateUserData, isPending, error };
 };
 
-export const useLogout = () => {
+export const useLogout = (id) => {
    const { mutate: logout, isPending: logoutLoading } = useMutation({
-      mutationFn: () => {
-         if (!decoded) return toast.error(`Please log in in order to finish`);
-         return fetchData(
+      mutationFn: () =>
+         fetchData(
             {
-               url: `/user/logout/${decoded?.id}`,
+               url: `/user/logout/${id}`,
             },
             true
-         );
-      },
+         ),
 
       onSuccess: (data) => {
          toast.success(data?.message);
@@ -143,18 +137,16 @@ export const useLogout = () => {
 };
 
 // delete acc
-export const useDeleteUser = () => {
+export const useDeleteUser = (id) => {
    const { mutate: deleteAcc, isPending: deleteLoading } = useMutation({
-      mutationFn: () => {
-         if (!decoded) return toast.error(`Please log in in order to finish`);
-         return fetchData(
+      mutationFn: () =>
+         fetchData(
             {
-               url: `/user/delete/${decoded?.id}`,
+               url: `/user/delete/${id}`,
                method: 'DELETE',
             },
             true
-         );
-      },
+         ),
 
       onSuccess: (data) => {
          toast.success(data?.message);
@@ -187,9 +179,8 @@ export const useGetUserAds = function (announcements) {
 export const useOfferStatus = function () {
    const queryClient = useQueryClient();
    const { mutate: mutateOfferStatus } = useMutation({
-      mutationFn: ({ endpoint, body }) => {
-         console.log(endpoint, body);
-         return fetchData(
+      mutationFn: ({ endpoint, body }) =>
+         fetchData(
             {
                url: endpoint,
                method: 'POST',
@@ -198,8 +189,8 @@ export const useOfferStatus = function () {
                },
             },
             true
-         );
-      },
+         ),
+
       onSuccess: (data) => {
          toast.success(data?.message);
          queryClient.invalidateQueries(['user']);

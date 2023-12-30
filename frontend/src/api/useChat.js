@@ -30,7 +30,7 @@ export const useCreateMsg = function () {
                method: 'POST',
                data,
             },
-            false
+            true
          ),
 
       onError: (err) => toast.error(err?.message),
