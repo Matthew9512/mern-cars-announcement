@@ -19,7 +19,7 @@ function Hero() {
                Find Your Car
             </Button>
          </div>
-         <div className='md:w-3/5 w-full md:h-[700px] h-[500px] bg-primary-blue relative shape'>
+         <div className='md:w-3/5 w-full md:h-[700px] sm:h-[400px] h-[300px] bg-primary-blue relative shape'>
             <div className='absolute translate-y-[50% 50%] h-full'>
                <Image src='hero.png' alt='hero image' className='object-contain' />
             </div>

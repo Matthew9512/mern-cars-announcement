@@ -25,7 +25,10 @@ const carsSchema = new schema({
       type: String,
       lowercase: true,
    },
-   description: String,
+   description: {
+      type: String,
+      trim: true,
+   },
    created: { type: Date, default: Date.now },
    features: {
       type: Boolean,

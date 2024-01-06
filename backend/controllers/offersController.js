@@ -41,19 +41,19 @@ const getOffer = async function (req, res, next) {
       console.log(error.message);
    }
 };
-/**
- * @todo pagination client => send page num
- */
+
 const getFeaturesOffer = async function (req, res, next) {
    try {
-      // const { page } = req.query;
+      const { page } = req.query;
 
-      const pagesAmount =
-         Math.ceil(await carsModel.find({ features: true, active: true }).countDocuments()) / utils.OFFER_RES_PER_PAGE;
+      const pagesAmount = Math.ceil(
+         (await carsModel.find({ features: true, active: true }).countDocuments()) / utils.OFFER_RES_PER_PAGE
+      );
 
-      const offer = await carsModel.find({ features: true, active: true });
-      // .limit(utils.OFFER_RES_PER_PAGE)
-      // .skip((page - 1) * utils.OFFER_RES_PER_PAGE);
+      const offer = await carsModel
+         .find({ features: true, active: true })
+         .limit(utils.OFFER_RES_PER_PAGE)
+         .skip((page - 1) * utils.OFFER_RES_PER_PAGE);
 
       res.status(200).json({ offer, pagesAmount });
    } catch (error) {
@@ -69,7 +69,7 @@ const getSearchOffer = async function (req, res, next) {
       if (!queryString?.brand)
          return res.status(404).json({ message: `Couldn't find offer that matches your criteria` });
 
-      const pagesAmount = Math.ceil(await carsModel.find(queryString).countDocuments()) / utils.OFFER_RES_PER_PAGE;
+      const pagesAmount = Math.ceil((await carsModel.find(queryString).countDocuments()) / utils.OFFER_RES_PER_PAGE);
 
       const offer = await carsModel
          .find(queryString)

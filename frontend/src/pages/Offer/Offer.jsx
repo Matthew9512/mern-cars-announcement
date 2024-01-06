@@ -4,7 +4,7 @@ import { useGetOffer } from '../../api/useOffer';
 import OfferImages from './components/OfferImages';
 import OfferDetils from './components/OfferDetils';
 import ContactWithSeller from './components/ContactWithSeller';
-import NoOfferFound from './components/NoOfferFound';
+import NoOfferFound from '../../ui/NoOfferFound';
 import LoadingSpinner from '../../ui/LoadingSpinner';
 import MainDetails from './components/MainDetails';
 

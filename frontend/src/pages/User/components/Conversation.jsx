@@ -1,6 +1,7 @@
 import { memo, useContext, useEffect, useRef } from 'react';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import Message from './Message';
+import ConversationHomeScreen from './ConversationHomeScreen';
 import { useGetChatMsg } from '../../../api/useChat';
 import { useOnScreen } from '../../../api/useOnScreen';
 import { MessagesContext } from '../../../context/messagesContext';
@@ -41,15 +42,17 @@ function Conversation({ reciverId, user, messages, setMessages, page, setPage })
          <div
             id='scrollEle'
             className={`${
-               reciverId && 'shadow-top'
+               reciverId ? 'shadow-top' : ''
             } h-[90%] md:pr-1 pb-4 overflow-y-scroll overflow-hidden flex flex-col-reverse`}
          >
             {messages.length ? (
                messages.map((msg) => (
                   <Message key={msg?._id} msg={msg} user={user} chatInfo={currentChatMsg?.chatMembers} />
                ))
+            ) : !reciverId ? (
+               <ConversationHomeScreen />
             ) : (
-               <p className='text-center pb-16'>Choose contact to start a conversation or start chat with seller</p>
+               'Write a message to finish starting a new conversation with seller'
             )}
             <p className='invisible' ref={infScrollEle}>
                infScrollEle

@@ -45,13 +45,19 @@ export const useGetOffer = function (id) {
 };
 
 export const useSearchOffer = function (searchParams) {
-   const endpoint = !searchParams.size ? `/features` : `/q?${searchParams}`;
+   const endpoint = !searchParams.size ? `/features/q?${searchParams}` : `/q?${searchParams}`;
    const { data, isPending, error } = useQuery({
       queryKey: ['featuresOffer', endpoint],
-      queryFn: () =>
-         fetchData({
+      queryFn: () => {
+         if (location.pathname.startsWith('/features')) {
+            return fetchData({
+               url: `/offer/features/q?${searchParams}`,
+            });
+         }
+         return fetchData({
             url: `/offer${endpoint}`,
-         }),
+         });
+      },
    });
 
    return { data, isPending, error };

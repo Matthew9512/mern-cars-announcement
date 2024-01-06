@@ -3,8 +3,8 @@ const usersModel = require('../models/usersModel');
 
 const socketServer = new io.Server(8800, {
    cors: {
-      origin: 'http://127.0.0.1:5173',
-      // http://127.0.0.1:4173
+      // origin: 'http://127.0.0.1:5173',
+      // origin: 'http://127.0.0.1:4173',
    },
 });
 
@@ -37,7 +37,6 @@ socketServer.on('connection', (socket) => {
 
    socket.on('sendMessage', async ({ senderId, reciverId, message }) => {
       const user = getUser(reciverId);
-      await usersModel.findByIdAndUpdate(reciverId, { seenChats: false });
 
       socketServer.to(user?.socketId).emit('getMessage', {
          senderId,

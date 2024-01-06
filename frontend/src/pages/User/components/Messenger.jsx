@@ -25,20 +25,18 @@ function Messenger() {
       if (socket.current)
          socket.current.on('isTyping', (user) => {
             setWhosTyping({ username: user?.username, senderId: user?.senderId });
-            // setWhosTyping({ username: user?.username, senderId: user?.senderId, reciverId: user?.reciverId });
             setTimeout(() => {
                setWhosTyping(false);
-            }, 1000);
+            }, 1500);
          });
    }, [socket]);
 
    return (
-      <section className='bg-secondary-white pt-8 relative'>
-         {/* <section className='bg-secondary-white pt-8 relative'> */}
+      <section className='bg-secondary-white pt-4 relative'>
          <UsersNavbar />
-         <article className='lg:w-4/5 w-full h-[70vh] mx-auto flex'>
+         <article className='lg:w-4/5 w-full h-[70vh] mx-auto flex '>
             <ContactList reciverId={id} user={user} resetMessages={resetMessages} />
-            <div className=' relative px-2 w-full'>
+            <div className='relative px-2 w-full'>
                <Conversation
                   reciverId={id}
                   user={user}

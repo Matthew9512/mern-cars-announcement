@@ -2,13 +2,14 @@ import { useSearchParams } from 'react-router-dom';
 import CarCard from './CarCard';
 import { useSearchOffer } from '../../../api/useOffer';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import Empty from '../../../ui/Empty';
 import Pagination from '../../../ui/Pagination';
 import { usePagination } from '../../../api/usePagination';
+import NoOfferFound from '../../../ui/NoOfferFound';
+import LinkButton from '../../../ui/LinkButton';
 
 function CarsList() {
    const [searchParams, setSearchParams] = useSearchParams();
-   const { page, setPage, handleSetPage } = usePagination(searchParams, setSearchParams);
+   const { page, handleSetPage } = usePagination(searchParams, setSearchParams);
    const { data, isPending, error } = useSearchOffer(searchParams);
 
    return (
@@ -17,15 +18,21 @@ function CarsList() {
             {isPending && <LoadingSpinner />}
             {error && (
                <div className='col-span-full'>
-                  <Empty resourceName='cars'>
-                     <span>{error?.message}</span>
-                  </Empty>
+                  <NoOfferFound message={error?.message} />
                </div>
             )}
-            <p>SEE MORE BTN FOR FEATURES</p>
             {data && data?.offer.map((item) => <CarCard key={item?._id} item={item} />)}
          </section>
-         {data?.pagesAmount > 1 && (
+         {!location.pathname.startsWith('/features') && (
+            <LinkButton
+               to='/features?page=1'
+               variant='primary'
+               className='absolute left-1/2 -translate-x-1/2 bottom-16'
+            >
+               See all promoted cars
+            </LinkButton>
+         )}
+         {data?.pagesAmount > 1 && location.search && (
             <Pagination page={page} handleSetPage={handleSetPage} pagesAmount={data?.pagesAmount} />
          )}
       </>

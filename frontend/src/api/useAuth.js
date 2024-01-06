@@ -136,7 +136,6 @@ export const useLogout = (id) => {
    return { logout, logoutLoading };
 };
 
-// delete acc
 export const useDeleteUser = (id) => {
    const { mutate: deleteAcc, isPending: deleteLoading } = useMutation({
       mutationFn: () =>

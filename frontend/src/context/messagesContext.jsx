@@ -48,7 +48,7 @@ export const MessagesContextProvider = ({ children }) => {
       if (!user) return;
 
       setNewMessageNotifyDot(unseenChats);
-   }, [user]);
+   }, [user, unseenChats]);
 
    return (
       <MessagesContext.Provider

@@ -4,11 +4,10 @@ const usersModel = require('../models/usersModel');
 
 const createChat = async function (req, res, next) {
    try {
-      const { senderId, reciverId, message, senderName } = req.body;
-
+      const { senderId, reciverId, message, senderName, senderAvatar } = req.body;
       // find name of reciver
       const reciver = await usersModel.findById(reciverId).select('username usersAvatar');
-      const sender = await usersModel.findById(senderId).select('usersAvatar');
+      // const sender = await usersModel.findById(senderId).select('usersAvatar');
 
       await chatModel.create({
          members: [senderId, reciverId],
@@ -18,7 +17,8 @@ const createChat = async function (req, res, next) {
          lastSender: reciver?.username,
          lastMessage: message,
          reciverAvatar: reciver?.usersAvatar,
-         senderAvatar: sender?.usersAvatar,
+         // senderAvatar: sender?.usersAvatar,
+         senderAvatar,
          sellerId: reciverId,
       });
 
@@ -50,7 +50,29 @@ const getChatList = async function (req, res, next) {
    }
 };
 
+// mark chat as readed if user is the one who recives messages
+const updateChat = async function (req, res, next) {
+   try {
+      const { senderId } = req.body;
+      const { id } = req.params;
+
+      const [findChat] = await chatModel.find({
+         members: { $all: [senderId, id] },
+      });
+
+      if (senderId === findChat?.reciverId) {
+         await chatModel.findOneAndUpdate({ members: { $all: [senderId, id] } }, { reciverSeen: true }, { new: true });
+      }
+
+      res.sendStatus(200);
+   } catch (error) {
+      next(error.message);
+      console.log(error);
+   }
+};
+
 module.exports = {
    createChat,
    getChatList,
+   updateChat,
 };

@@ -14,7 +14,7 @@ function Followed() {
       setFollowList(updatedLS);
       localStorage.setItem('car__ads', JSON.stringify(updatedLS));
 
-      toast.success(`You stopped following the selected ad`);
+      toast.success(`You stopped following the selected offer`);
    };
 
    return (
@@ -22,9 +22,9 @@ function Followed() {
          {!followList.length ? (
             <div className='px-8 py-16 relative lg:w-4/5 w-full mx-auto flex flex-col'>
                <div className='mx-auto'>
-                  <Empty resourceName='followed ads'>
-                     <span className=''>
-                        Add the ad to your watch list in the search results or directly on the ad page.
+                  <Empty resourceName='followed cars'>
+                     <span>
+                        Add the car to your watch list from the search results or directly from the offer page.
                         <br /> Thanks to this, you can browse and compare vehicles that interest you.
                      </span>
                   </Empty>

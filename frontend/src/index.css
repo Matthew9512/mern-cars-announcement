@@ -26,7 +26,10 @@ html {
    @apply flex items-center justify-center;
 }
 .activeBtnTransmition {
-   @apply bg-secondary-blue text-primary-white;
+   @apply bg-primary-blue text-primary-white;
+}
+.error {
+   @apply border border-primary-red;
 }
 .shape {
    border-radius: 91% 9% 0% 100% / 73% 0% 100% 27%;
@@ -75,15 +78,6 @@ html {
    display: grid;
    gap: 4em;
    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-.error {
-   border: 2px solid red;
-   outline: none;
-}
-
-.no-error {
-   border: 2px solid rgb(210, 208, 208);
-   outline: none;
 }
 .notificationDot {
    position: absolute;

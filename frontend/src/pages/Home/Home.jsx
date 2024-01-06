@@ -6,7 +6,7 @@ function Home() {
    return (
       <>
          <Hero />
-         <section className='w-[80%] mx-auto pb-24'>
+         <section className='w-[80%] mx-auto pb-32'>
             <h2 className='text-2xl font-semibold' id='cars-section'>
                Cars catalogue
             </h2>

@@ -3,30 +3,29 @@ import { useEffect, useState } from 'react';
 export const useScreen = function (arrivalMessage) {
    const [dimension, setDimension] = useState(false);
 
-   useEffect(() => {
-      const debouncedResizeHandler = debounce(() => {
-         console.log(`***** ${window.innerWidth} debounced resize`); // See the cool difference in console
-         if (window.innerWidth > 642) return setDimension(false);
-         if (window.innerWidth <= 640) return setDimension(true);
-      }, 100);
-      window.addEventListener('resize', debouncedResizeHandler);
-
-      if (window.innerWidth > 642) return setDimension(false);
-      if (window.innerWidth <= 640) return setDimension(true);
-
-      return () => window.removeEventListener('resize', debouncedResizeHandler);
-   }, [arrivalMessage]); // Note this empt
-
    function debounce(fn, ms) {
       let timer;
-      return (_) => {
+      return () => {
          clearTimeout(timer);
-         timer = setTimeout((_) => {
+         timer = setTimeout(() => {
             timer = null;
             fn.apply(this, arguments);
          }, ms);
       };
    }
+
+   useEffect(() => {
+      const debouncedResizeHandler = debounce(() => {
+         if (innerWidth > 642) return setDimension(false);
+         if (innerWidth <= 640) return setDimension(true);
+      }, 100);
+      addEventListener('resize', debouncedResizeHandler);
+
+      if (innerWidth > 642) return setDimension(false);
+      if (innerWidth <= 640) return setDimension(true);
+
+      return () => removeEventListener('resize', debouncedResizeHandler);
+   }, [arrivalMessage]);
 
    return dimension;
 };

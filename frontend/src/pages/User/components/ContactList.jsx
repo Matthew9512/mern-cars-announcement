@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import Input from '../../../ui/Input';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import ContactItem from './ContactItem';
-import { useGetChatList } from '../../../api/useChat';
+import { useGetChatList, useUpdateChat } from '../../../api/useChat';
 import { MessagesContext } from '../../../context/messagesContext';
 
 function ContactList({ user, reciverId, resetMessages }) {
@@ -14,6 +14,7 @@ function ContactList({ user, reciverId, resetMessages }) {
    const navigate = useNavigate();
    const { id: paramsId } = useParams();
    const queryClient = useQueryClient();
+   const { updateChat } = useUpdateChat(user?._id);
 
    const handleCurrentChat = (setStyleNewMessage, arr) => {
       const id = arr?.find((value) => value !== user?._id);
@@ -48,8 +49,17 @@ function ContactList({ user, reciverId, resetMessages }) {
       if (contactList.find((c) => c.members.includes(arrivalMessage.reciverId))) return;
       setTimeout(() => {
          queryClient.invalidateQueries(['chat-list']);
-      }, 1000);
+      }, 1500);
    }, [arrivalMessage, contactList]);
+
+   // mark chat as readed
+   useEffect(() => {
+      if (!reciverId) return;
+
+      return () => {
+         updateChat(reciverId);
+      };
+   }, [reciverId]);
 
    return (
       <aside className='flex flex-col items-start overflow-auto border-r border-r-primary-grey/70 sm:w-96 w-[6.5rem] relative px-2'>
@@ -57,7 +67,8 @@ function ContactList({ user, reciverId, resetMessages }) {
             onChange={handleSearchContact}
             className='sm:w-full w-12 mx-auto'
             type='text'
-            placeholder='search for someone xd'
+            placeholder='find contact by name'
+            disabled={!contactList?.length}
          />
          {isGetChatListPending && <LoadingSpinner />}
          {contactList?.length ? (
@@ -73,7 +84,7 @@ function ContactList({ user, reciverId, resetMessages }) {
                />
             ))
          ) : (
-            <p className='text-center'>Your contact list is empty</p>
+            <p className='mx-auto text-center py-4'>Your contact list is empty</p>
          )}
       </aside>
    );

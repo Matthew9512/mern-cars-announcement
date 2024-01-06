@@ -46,6 +46,7 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
               senderId: user?._id,
               message: newMsg,
               senderName: user?.username,
+              senderAvatar: user?.usersAvatar,
            });
 
       socket.current.emit('sendMessage', {
@@ -74,8 +75,6 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
       <form
          onSubmit={handleConversation}
          onInput={handleMessageLength}
-         // w-96
-         // h-1/5
          className='mx-auto h-[10%] flex-center gap-2 relative'
       >
          <p className='italic absolute -top-10 -left-3 p-4 text-sm text-primary-grey'>

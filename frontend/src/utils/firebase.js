@@ -35,7 +35,6 @@ export const useFileUpload = (setUploadedImgArr) => {
          },
          () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-               console.log(downloadURL);
                setUploadedImgArr((prev) => [...prev, downloadURL]);
                setLoading(false);
             });

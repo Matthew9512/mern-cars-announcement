@@ -19,16 +19,16 @@ function UsersPersonalData() {
    };
 
    return (
-      <section className='pt-7 bg-secondary-white min-h-[85vh]'>
+      <section className='pt-4 bg-secondary-white min-h-[85vh]'>
          <UsersNavbar />
          <form onSubmit={handleSubmitForm} className='flex-center flex-col gap-4 '>
             <span className='font-semibold text-xl py-2'>Seller details</span>
             <label htmlFor='city'>City:</label>
-            <Input type='text' placeholder='city' name='city' id='city' defaultValue={user?.city} />
+            <Input type='text' placeholder='city name' name='city' id='city' defaultValue={user?.city} />
             <label htmlFor='contact person'>Contact person:</label>
             <Input
                type='text'
-               placeholder='contact person'
+               placeholder='your name'
                name='contactPerson'
                id='contact person'
                defaultValue={user?.contactPerson}

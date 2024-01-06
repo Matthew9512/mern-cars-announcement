@@ -2,10 +2,10 @@ import { useContext, useRef, useState } from 'react';
 import UsersNavbar from './UsersNavbar';
 import { useGetUserAds, useOfferStatus } from '../../../api/useAuth';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
-import Empty from '../../../ui/Empty';
 import CarCard from '../../Home/components/CarCard';
 import LoadingButton from '../../../ui/LoadingButton';
 import Modal from '../../../ui/Modal';
+import NoOfferFound from '../../../ui/NoOfferFound';
 import { UserContext } from '../../../context/userContext';
 
 function UsersAnnouncement() {
@@ -44,7 +44,7 @@ function UsersAnnouncement() {
    };
 
    return (
-      <section className='bg-secondary-white p-8 relative min-h-[85vh]'>
+      <section className='bg-secondary-white p-4 relative min-h-[85vh]'>
          <Modal
             display={display}
             setDisplay={setDisplay}
@@ -72,10 +72,8 @@ function UsersAnnouncement() {
                ))}
             </article>
          ) : (
-            <div className='text-center mt-8 space-y-4'>
-               <Empty resourceName='user'>
-                  <p>No users data available</p>
-               </Empty>
+            <div className='text-center mt-8 space-y-4 flex-center mx-auto'>
+               <NoOfferFound message="Looks like you didn't create any offers yet" />
             </div>
          )}
       </section>

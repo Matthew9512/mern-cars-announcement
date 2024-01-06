@@ -20,7 +20,7 @@ function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, ar
 
    useEffect(() => {
       !chat?.reciverSeen && chat?.reciverId === user?._id ? setStyleNewMessage(true) : setStyleNewMessage(false);
-   }, [chat]);
+   }, [chat, user?._id]);
 
    return (
       <div

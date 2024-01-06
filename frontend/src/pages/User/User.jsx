@@ -14,7 +14,7 @@ function User() {
    const { deleteAcc, deleteLoading } = useDeleteUser(user?._id);
 
    return (
-      <section className='bg-secondary-white pt-8 min-h-[85vh] relative'>
+      <section className='bg-secondary-white pt-4 min-h-[85vh] relative'>
          <UsersNavbar />
          <Modal
             display={display}

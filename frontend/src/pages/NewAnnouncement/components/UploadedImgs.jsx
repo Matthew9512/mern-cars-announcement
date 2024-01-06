@@ -1,12 +1,19 @@
+import { useEffect } from 'react';
 import Image from '../../../ui/Image';
 import { closeIcon } from '../../../utils/icons';
 
-function UploadedImgs({ uploadedImgArr, setUploadedImgArr }) {
+function UploadedImgs({ uploadedImgArr, setUploadedImgArr, setError }) {
    const removeImg = (img) => {
       setUploadedImgArr((prev) => {
          return prev.filter((link) => link !== img);
       });
    };
+
+   // add error if user removed all images
+   useEffect(() => {
+      if (uploadedImgArr.length === 0)
+         setError('images', { type: 'custom', message: 'At least on image of your car is required' });
+   }, [uploadedImgArr]);
 
    return (
       <>

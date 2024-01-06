@@ -1,8 +1,8 @@
+const jwt = require('jsonwebtoken');
 const usersModel = require('../models/usersModel');
 const carsModel = require('../models/carsModel');
 const chatModel = require('../models/chatsModel');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 // create random hex color for chat avatar
 function randomColor() {
@@ -156,7 +156,7 @@ const deactivateOffer = async function (req, res, next) {
       const { offerID } = req.body.body;
       if (!offerID) return res.status(400).json({ message: `Offer data required` });
 
-      await carsModel.findByIdAndUpdate(offerID, { active: false, features: false });
+      await carsModel.findByIdAndUpdate(offerID, { active: false });
 
       res.status(200).json({ message: `Your offer is no longer active` });
    } catch (error) {

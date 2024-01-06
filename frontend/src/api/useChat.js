@@ -76,3 +76,24 @@ export const useGetChatMsg = function (reciverId, senderId, page) {
 
    return { currentChatMsg, isGetChatMsgPending };
 };
+
+export const useUpdateChat = function (senderId) {
+   const queryClient = useQueryClient();
+   const { mutate: updateChat } = useMutation({
+      mutationFn: (id) =>
+         fetchData(
+            {
+               url: `/message/update-chat/${id}`,
+               method: 'POST',
+               data: {
+                  senderId,
+               },
+            },
+            true
+         ),
+
+      onSuccess: () => queryClient.invalidateQueries(['chat-list']),
+   });
+
+   return { updateChat };
+};
