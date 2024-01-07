@@ -91,7 +91,6 @@ html {
    outline-offset: -2px;
    animation: pulse 800ms ease-in-out infinite;
 }
-
 @keyframes pulse {
    0% {
       outline: 0px solid red;
@@ -114,7 +113,6 @@ html {
 .show {
    height: 30vh !important;
 }
-
 @media (max-width: 650px) {
    .navbar__items-wrapper {
       flex-direction: column;
