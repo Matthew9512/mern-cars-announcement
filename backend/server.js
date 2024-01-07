@@ -6,7 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const corsOptions = require('./config/corsOptions');
-const connectDB = require('./config/mongoDb');
+const connectDB = require('./config/mongoDbCon');
 const errorHandler = require('./middleware/errorHandler');
 require('./config/socket');
 
