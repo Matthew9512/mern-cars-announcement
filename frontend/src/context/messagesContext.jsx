@@ -8,7 +8,7 @@ export const MessagesContext = createContext({});
 export const MessagesContextProvider = ({ children }) => {
    const { user, unseenChats } = useContext(UserContext);
    let socket = useRef(
-      io('ws://localhost:8800', {
+      io('ws://mern-cars-announcement-production.up.railway.app', {
          reconnectionAttempts: 2,
       })
    );

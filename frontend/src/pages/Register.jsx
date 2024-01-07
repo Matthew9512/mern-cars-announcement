@@ -22,7 +22,7 @@ function Register() {
             onSubmit={handleRegister}
             className='bg-secondary-white w-[420px] rounded-lg flex-center flex-col py-12 gap-4'
          >
-            <p className='flex-center gap-2 text-3xl py-6'>{carIcon} CarSell</p>
+            <p className='flex-center gap-2 text-3xl py-6'>{carIcon} JustCars</p>
             <div className='flex items-start flex-col gap-4'>
                <label className='opacity-70 italic'>your username</label>
                <Input type='text' placeholder='username' name='username' />
