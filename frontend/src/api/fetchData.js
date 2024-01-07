@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const _URL = `mern-cars-announcement-production.up.railway.app`;
+export const _URL = `https://mern-cars-announcement-production.up.railway.app/`;
 
 axios.defaults.baseURL = _URL;
 axios.defaults.withCredentials = true;
