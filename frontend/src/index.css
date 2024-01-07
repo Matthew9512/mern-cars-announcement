@@ -35,7 +35,7 @@ html {
    border-radius: 91% 9% 0% 100% / 73% 0% 100% 27%;
 }
 .no-data {
-   background: url('../no-offer.png') center no-repeat;
+   background: url('/no-offer.png') center no-repeat;
    background-size: contain;
 }
 .svg-loader {
@@ -72,8 +72,6 @@ html {
       stroke-dashoffset: -125px;
    }
 }
-
-/*  */
 .ui {
    display: grid;
    gap: 4em;
@@ -104,22 +102,11 @@ html {
       outline-offset: 2px;
    }
 }
-/* ===== */
 .navbar__items-wrapper {
    display: flex;
    align-items: center;
    list-style: none;
    gap: 1rem;
-}
-.navbar__btn:hover {
-   cursor: pointer;
-}
-.navbar__btn {
-   cursor: pointer;
-   position: relative;
-   transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-   transition-duration: 400ms;
-   transition-property: color;
 }
 .hide {
    height: 0px !important;

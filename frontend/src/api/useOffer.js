@@ -1,9 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from './fetchData';
 
 export const useAddNewOffer = function () {
+   const queryClient = useQueryClient();
    const navigate = useNavigate();
    const { mutate, isPending } = useMutation({
       mutationFn: ({ carData, sellerData }) =>
@@ -20,6 +21,7 @@ export const useAddNewOffer = function () {
          ),
       onSuccess: (data) => {
          toast.success(data?.message);
+         queryClient.invalidateQueries(['user']);
          setTimeout(() => {
             navigate(`/offer/${data?.offerId}`);
          }, 1200);

@@ -22,7 +22,7 @@ function Login() {
             onSubmit={handleLogin}
             className='bg-secondary-white w-[420px] rounded-lg flex-center flex-col py-12 gap-4'
          >
-            <p className='flex-center gap-2 text-3xl py-6'>{carIcon} Car Rent</p>
+            <p className='flex-center gap-2 text-3xl py-6'>{carIcon} CarSell</p>
             <div className='flex items-start flex-col gap-4'>
                <label className='opacity-70 italic'>email adress:</label>
                <Input type='email' placeholder='email' name='email' />

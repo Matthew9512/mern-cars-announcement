@@ -12,11 +12,13 @@ function CarCard({ item, disabled = false }) {
          <p className='text-2xl'>&euro; {formatPrice(item?.price)}</p>
          <div className='w-56 h-56 my-4 flex-center rounded-md overflow-hidden relative'>
             <Image src={item?.images?.at(0)} alt={`${item?.brand} image`} />
-            <Image
-               src={item?.images?.at(1)}
-               alt={`${item?.brand} image`}
-               className='absolute inset-0 opacity-0 duration-300 group-hover:opacity-100'
-            />
+            {item?.images?.at(1) && (
+               <Image
+                  src={item?.images?.at(1)}
+                  alt={`${item?.brand} image`}
+                  className='absolute inset-0 opacity-0 duration-300 group-hover:opacity-100'
+               />
+            )}
          </div>
          <div className='flex-center gap-6'>
             <span className='flex flex-col items-center gap-2'>

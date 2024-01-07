@@ -18,7 +18,6 @@ function UsersAnnouncement() {
 
    const handleOfferState = (e, offerID) => {
       const click = e.target.textContent;
-      console.log(click);
       if (click === 'Deactivate') {
          actionType.current = click;
          reqBody.current = {

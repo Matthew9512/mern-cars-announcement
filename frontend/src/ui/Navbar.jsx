@@ -24,7 +24,7 @@ function Navbar() {
    useEffect(() => {
       if (!navbarVis) return;
       const handleOusideClick = (e) => {
-         if (!navRef.current.contains(e.target)) setNavbarVis(false);
+         if (!navRef.current?.contains(e.target)) setNavbarVis(false);
       };
 
       document.addEventListener('click', handleOusideClick);
@@ -35,7 +35,7 @@ function Navbar() {
    return (
       <nav ref={navRef} onClick={toggleNavbar} className='flex justify-between items-center h-16 w-full py-2 px-8'>
          <LinkButton to='/' className='flex items-center gap-2 text-lg'>
-            {carIcon} Car Rent
+            {carIcon} CarSell
          </LinkButton>
          <input type='checkbox' id='navbar-check' className='hidden' />
          <div className='relative'>
