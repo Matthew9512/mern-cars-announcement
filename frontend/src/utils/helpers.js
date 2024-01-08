@@ -40,3 +40,25 @@ export const formatResData = function (resData) {
 export const getLS = function () {
    return localStorage.getItem('car__ads') ? JSON.parse(localStorage.getItem('car__ads')) : [];
 };
+
+// data of chat members for creating message
+export const chatMembersData = function (currentChatMsg, user) {
+   // find name of reciver
+   const reciversName = [currentChatMsg?.chatMembers?.reciverName, currentChatMsg?.chatMembers?.senderName].find(
+      (name) => name !== user?.username
+   );
+   // find avatar of reciver
+   const reciversAvatar = [currentChatMsg?.chatMembers?.reciverAvatar, currentChatMsg?.chatMembers?.senderAvatar].find(
+      (avatar) => avatar !== user?.usersAvatar
+   );
+
+   return { reciversName, reciversAvatar };
+};
+
+// data of chat members for creating contact item
+export const contactItemData = function (user, chat, arrivalMessage) {
+   const username = user?.username === chat?.reciverName ? chat?.senderName : chat?.reciverName;
+   const checkArrMsg = arrivalMessage && chat?.members.includes(arrivalMessage?.senderId);
+
+   return { username, checkArrMsg };
+};

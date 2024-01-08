@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
-import { formatTime } from '../../../utils/helpers';
+import { useEffect, useMemo, useState } from 'react';
+import { contactItemData, formatTime } from '../../../utils/helpers';
 import { useScreen } from '../../../api/useScreen';
 import Avatar from './Avatar';
 
 function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, arrivalMessage }) {
    const [styleNewMessage, setStyleNewMessage] = useState(false);
    const dimension = useScreen(arrivalMessage);
-
-   // helpers
-   const username = user?.username === chat?.reciverName ? chat?.senderName : chat?.reciverName;
-   const checkArrMsg = arrivalMessage && chat?.members.includes(arrivalMessage?.senderId);
+   const contactData = useMemo(() => contactItemData(user, chat, arrivalMessage), [user, chat, arrivalMessage]);
 
    useEffect(() => {
       if (!arrivalMessage) return;
@@ -33,20 +30,20 @@ function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, ar
             user={user}
             onlineUsers={onlineUsers}
             chat={chat}
-            username={username}
+            username={contactData?.username}
             styleNewMessage={styleNewMessage}
             dimension={dimension}
          />
          <div className={`${styleNewMessage && 'font-bold'} sm:flex flex-col w-full hidden justify-between`}>
             <div className='flex justify-between'>
-               <p className='first-letter:uppercase text-lg'>{username}</p>
+               <p className='first-letter:uppercase text-lg'>{contactData?.username}</p>
                <span className='text-xs text-right truncate italic pr-1'>
-                  {(checkArrMsg && formatTime(arrivalMessage?.created)) || formatTime(chat?.created)}
+                  {(contactData?.checkArrMsg && formatTime(arrivalMessage?.created)) || formatTime(chat?.created)}
                </span>
             </div>
             <p className='line-clamp-1'>
                <span>{chat?.lastSender}: </span>
-               {(checkArrMsg && arrivalMessage?.message) || chat?.lastMessage}
+               {(contactData?.checkArrMsg && arrivalMessage?.message) || chat?.lastMessage}
             </p>
          </div>
       </div>

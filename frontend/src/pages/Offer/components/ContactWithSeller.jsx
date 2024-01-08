@@ -18,7 +18,7 @@ function ContactWithSeller({ sellerData, sellerId }) {
          <div className='flex gap-6 flex-col border w-[18em] border-secondary-grey p-4 rounded-md'>
             <p className='flex items-center gap-2'>
                {telIcon}
-               +48 {sellerData?.telNumber}
+               +48 {sellerData?.telNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3')}
             </p>
             <p className='flex items-center gap-2 capitalize'>
                {personIcon}

@@ -1,17 +1,17 @@
-import { useMemo } from 'react';
 import { formatTime } from '../../../utils/helpers';
 
-function Message({ msg, user, chatInfo }) {
-   const username = useMemo(() => {
-      return msg?.senderId === user?._id ? user?.username : chatInfo?.reciverName;
-   }, [msg, chatInfo]);
+function Message({ msg, user, chatMembers }) {
+   const username = msg?.senderId === user?._id ? user?.username : chatMembers.reciversName;
+   const usersAvatar = msg?.senderId === user?._id ? user.usersAvatar : chatMembers.reciversAvatar;
 
    return (
       <div className={`flex my-2 ${msg?.senderId === user?._id ? 'justify-end' : 'justify-start'} `}>
          <div className={`grid grid-cols-[2rem,1fr] max-w-[80%] gap-2 place-items-start`}>
             <div
                className='h-8 w-8 rounded-full flex-center uppercase'
-               style={{ backgroundColor: msg?.senderId === user?._id ? user.usersAvatar : chatInfo?.reciverAvatar }}
+               style={{
+                  backgroundColor: usersAvatar,
+               }}
             >
                <span>{username?.at(0)}</span>
             </div>
