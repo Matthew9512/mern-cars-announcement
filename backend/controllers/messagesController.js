@@ -25,6 +25,7 @@ const getChatMessages = async function (req, res, next) {
          .limit(utils.MSG_RES_PER_PAGE)
          .skip((page - 1) * utils.MSG_RES_PER_PAGE);
 
+      // chat members data
       const chatMembers = {
          senderAvatar: findChat?.senderAvatar,
          reciverAvatar: findChat?.reciverAvatar,
