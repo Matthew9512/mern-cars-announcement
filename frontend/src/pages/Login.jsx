@@ -3,7 +3,7 @@ import Input from '../ui/Input';
 import LinkButton from '../ui/LinkButton';
 import LoadingButton from '../ui/LoadingButton';
 import { useLogin } from '../api/useAuth';
-import DefaultLogin from './User/components/defaultLogin';
+import DefaultLogin from './User/components/DefaultLogin';
 
 function Login() {
    const { mutate, isPending } = useLogin();
