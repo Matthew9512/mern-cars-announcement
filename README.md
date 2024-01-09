@@ -1,5 +1,5 @@
 <div align="center">
-<h1>justRide</h1>
+<h1>justCars</h1>
 
 <a href='https://justcars.vercel.app/'>https://justcars.vercel.app/</a>
 
