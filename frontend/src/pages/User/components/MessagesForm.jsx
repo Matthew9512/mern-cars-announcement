@@ -3,8 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import LoadingButton from '../../../ui/LoadingButton';
 import { sendIcon } from '../../../utils/icons';
 import { useCreateChat, useCreateMsg } from '../../../api/useChat';
+import TypingNotify from './TypingNotify';
 
-function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessages }) {
+function MessagesForm({ socket, user, reciverId, messages, setMessages }) {
    let formRef = useRef();
    const [disabledSendBtn, setDisabledSendBtn] = useState(false);
    const { createNewMsg, isCreateMsgPending } = useCreateMsg();
@@ -77,9 +78,7 @@ function MessagesForm({ socket, user, reciverId, whosTyping, messages, setMessag
          onInput={handleMessageLength}
          className='mx-auto h-[10%] flex-center gap-2 relative'
       >
-         <p className='italic absolute -top-10 -left-3 p-4 text-sm text-primary-grey'>
-            {whosTyping && whosTyping?.senderId === reciverId && `${whosTyping?.username} typing...`}
-         </p>
+         <TypingNotify socket={socket} reciverId={reciverId} />
          <textarea
             disabled={!reciverId}
             onKeyDown={handleEnterPress}

@@ -3,6 +3,7 @@ import Input from '../ui/Input';
 import LinkButton from '../ui/LinkButton';
 import LoadingButton from '../ui/LoadingButton';
 import { useLogin } from '../api/useAuth';
+import DefaultLogin from './User/components/defaultLogin';
 
 function Login() {
    const { mutate, isPending } = useLogin();
@@ -17,7 +18,8 @@ function Login() {
    };
 
    return (
-      <section className='flex-center h-[90vh]'>
+      <section className='flex-center h-[90vh] relative'>
+         <DefaultLogin login={mutate} />
          <form
             onSubmit={handleLogin}
             className='bg-secondary-white w-[420px] rounded-lg flex-center flex-col py-12 gap-4'

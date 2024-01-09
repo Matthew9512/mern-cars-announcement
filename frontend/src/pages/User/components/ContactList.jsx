@@ -30,11 +30,13 @@ function ContactList({ user, reciverId, resetMessages }) {
 
    // search contact by its name based on input value
    const handleSearchContact = (e) => {
-      const inpValue = e.target.value;
+      const inpValue = e.target.value.toLowerCase();
 
       if (!inpValue) return setContactList(chatList);
-
-      setContactList(contactList.filter((chat) => chat.reciverName.includes(inpValue.toLowerCase())));
+      if (user?.username.includes(inpValue)) return setContactList([]);
+      setContactList(
+         chatList.filter((chat) => chat.reciverName.includes(inpValue) || chat.senderName.includes(inpValue))
+      );
    };
 
    useEffect(() => {
@@ -45,11 +47,13 @@ function ContactList({ user, reciverId, resetMessages }) {
 
    useEffect(() => {
       if (!arrivalMessage) return;
+      let contacts = [];
+      contactList.forEach((c) => c.members.filter((m) => m !== user?._id && contacts.push(m)));
 
-      if (contactList.find((c) => c.members.includes(arrivalMessage.reciverId))) return;
+      if (contacts.includes(arrivalMessage?.reciverId)) return;
       setTimeout(() => {
          queryClient.invalidateQueries(['chat-list']);
-      }, 1500);
+      }, 2000);
    }, [arrivalMessage, contactList]);
 
    // mark chat as readed
@@ -68,7 +72,7 @@ function ContactList({ user, reciverId, resetMessages }) {
             className='sm:w-full w-12 mx-auto'
             type='text'
             placeholder='find contact by name'
-            disabled={!contactList?.length}
+            disabled={!chatList?.length}
          />
          {isGetChatListPending && <LoadingSpinner />}
          {contactList?.length ? (

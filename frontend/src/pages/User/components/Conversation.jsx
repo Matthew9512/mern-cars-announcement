@@ -6,6 +6,7 @@ import { useGetChatMsg } from '../../../api/useChat';
 import { useOnScreen } from '../../../api/useOnScreen';
 import { MessagesContext } from '../../../context/messagesContext';
 import { chatMembersData } from '../../../utils/helpers';
+import StartOfChat from './StartOfChat';
 
 function Conversation({ reciverId, user, messages, setMessages, page, setPage }) {
    const { arrivalMessage } = useContext(MessagesContext);
@@ -54,6 +55,7 @@ function Conversation({ reciverId, user, messages, setMessages, page, setPage })
             ) : (
                'Write a message to finish starting a new conversation with seller'
             )}
+            {currentChatMsg?.pagesAmount === page && <StartOfChat chatMembers={chatMembers} />}
             <p className='invisible' ref={infScrollEle}>
                infScrollEle
             </p>

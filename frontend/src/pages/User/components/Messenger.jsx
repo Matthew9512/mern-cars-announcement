@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import UsersNavbar from './UsersNavbar';
 import ContactList from './ContactList';
 import Conversation from './Conversation';
@@ -11,7 +11,6 @@ function Messenger() {
    const { id } = useParams();
    const { user } = useContext(UserContext);
    const { socket } = useContext(MessagesContext);
-   const [whosTyping, setWhosTyping] = useState(false);
    const [messages, setMessages] = useState([]);
    let [page, setPage] = useState(1);
 
@@ -20,16 +19,6 @@ function Messenger() {
       setMessages([]);
       setPage(1);
    };
-
-   useEffect(() => {
-      if (socket.current)
-         socket.current.on('isTyping', (user) => {
-            setWhosTyping({ username: user?.username, senderId: user?.senderId });
-            setTimeout(() => {
-               setWhosTyping(false);
-            }, 1500);
-         });
-   }, [socket]);
 
    return (
       <section className='bg-secondary-white pt-4 relative'>
@@ -45,14 +34,7 @@ function Messenger() {
                   page={page}
                   setPage={setPage}
                />
-               <MessagesForm
-                  socket={socket}
-                  reciverId={id}
-                  user={user}
-                  whosTyping={whosTyping}
-                  messages={messages}
-                  setMessages={setMessages}
-               />
+               <MessagesForm socket={socket} reciverId={id} user={user} messages={messages} setMessages={setMessages} />
             </div>
          </article>
       </section>
