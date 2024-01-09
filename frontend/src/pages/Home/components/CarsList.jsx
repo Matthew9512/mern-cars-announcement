@@ -27,7 +27,7 @@ function CarsList() {
             <LinkButton
                to='/features?page=1'
                variant='primary'
-               className='absolute left-1/2 -translate-x-1/2 bottom-16'
+               className='absolute left-1/2 -translate-x-1/2 bottom-20'
             >
                See all promoted cars
             </LinkButton>

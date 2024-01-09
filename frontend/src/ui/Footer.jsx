@@ -2,7 +2,7 @@ import { githubIcon, linkedInIcon } from '../utils/icons';
 
 function Footer() {
    return (
-      <footer className='p-4 w-full absolute bottom-0'>
+      <footer className='p-4 w-full mt-auto'>
          <p className='flex items-center justify-center gap-2'>
             made by Mateusz{' '}
             <span className='text-xl'>
