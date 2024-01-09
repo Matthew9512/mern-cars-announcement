@@ -15,9 +15,11 @@ const register = async function (req, res, next) {
 
       if (!username || !password || !email) return res.status(400).json({ message: `User data required` });
 
-      const duplicate = await usersModel.findOne({ email });
+      const duplicateMail = await usersModel.findOne({ email });
+      const duplicateName = await usersModel.findOne({ username });
 
-      if (duplicate) return res.status(409).json({ message: `Email is invalid or already taken` });
+      if (duplicateMail) return res.status(409).json({ message: `Email is invalid or already taken` });
+      if (duplicateName) return res.status(409).json({ message: `Username is invalid or already taken` });
 
       const bcryptPass = await bcrypt.hash(password, 10);
 
