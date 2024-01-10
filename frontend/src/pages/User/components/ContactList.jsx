@@ -47,13 +47,8 @@ function ContactList({ user, reciverId, resetMessages }) {
 
    useEffect(() => {
       if (!arrivalMessage) return;
-      let contacts = [];
-      contactList.forEach((c) => c.members.filter((m) => m !== user?._id && contacts.push(m)));
-
-      if (contacts.includes(arrivalMessage?.reciverId)) return;
-      setTimeout(() => {
-         queryClient.invalidateQueries(['chat-list']);
-      }, 2000);
+      if (contactList.find((c) => c.members.includes(arrivalMessage.senderId))) return;
+      queryClient.invalidateQueries(['chat-list']);
    }, [arrivalMessage, contactList]);
 
    // mark chat as readed
