@@ -5,10 +5,10 @@ const usersModel = require('../models/usersModel');
 const createChat = async function (req, res, next) {
    try {
       const { senderId, reciverId, message, senderName, senderAvatar } = req.body;
-      // find name of reciver
-      const reciver = await usersModel.findById(reciverId).select('username usersAvatar');
+      // find reciver
+      const reciver = await usersModel.findByIdAndUpdate(reciverId);
 
-      await chatModel.create({
+      const newChat = await chatModel.create({
          members: [senderId, reciverId],
          reciverId,
          reciverName: reciver?.username,
@@ -19,6 +19,10 @@ const createChat = async function (req, res, next) {
          senderAvatar,
          sellerId: reciverId,
       });
+
+      // update reciver doc with new chat id
+      reciver.unseenChats.push(newChat._id);
+      reciver.save();
 
       await messageModel.create({
          senderId,
@@ -54,13 +58,7 @@ const updateChat = async function (req, res, next) {
       const { senderId } = req.body;
       const { id } = req.params;
 
-      const [findChat] = await chatModel.find({
-         members: { $all: [senderId, id] },
-      });
-
-      if (senderId === findChat?.reciverId) {
-         await chatModel.findOneAndUpdate({ members: { $all: [senderId, id] } }, { reciverSeen: true }, { new: true });
-      }
+      await usersModel.findByIdAndUpdate(senderId, { $pull: { unseenChats: id } }, { new: true });
 
       res.sendStatus(200);
    } catch (error) {

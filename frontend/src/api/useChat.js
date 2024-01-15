@@ -92,7 +92,7 @@ export const useUpdateChat = function (senderId) {
             true
          ),
 
-      onSuccess: () => queryClient.invalidateQueries(['chat-list']),
+      onSuccess: () => queryClient.invalidateQueries(['user']),
    });
 
    return { updateChat };

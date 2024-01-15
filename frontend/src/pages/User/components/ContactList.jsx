@@ -13,18 +13,23 @@ function ContactList({ user, reciverId, resetMessages }) {
    const [contactList, setContactList] = useState([]);
    const navigate = useNavigate();
    const { id: paramsId } = useParams();
-   const queryClient = useQueryClient();
    const { updateChat } = useUpdateChat(user?._id);
+   const queryClient = useQueryClient();
 
-   const handleCurrentChat = (setStyleNewMessage, arr) => {
-      const id = arr?.find((value) => value !== user?._id);
+   const handleCurrentChat = (e, setStyleNewMessage, chat) => {
+      const id = chat?.members.find((value) => value !== user?._id);
       if (paramsId === id) return;
+      const click = e.currentTarget;
       // reset page numb for inf scroll and messages array
       resetMessages();
       // handle notification dot
-      setNewMessageNotifyDot((prev) => prev - 1);
+      if (click.dataset.unread === 'true') {
+         setNewMessageNotifyDot((prev) => prev - 1);
+         updateChat(chat?._id);
+      }
       // remove bold text style from unreaded message
-      chatList.find((user) => user?.members.includes(id)) && setStyleNewMessage(false);
+      chatList.find((chatMem) => chatMem?.members.includes(id)) && setStyleNewMessage(false);
+      // mark chat as readed
       navigate(generatePath('/user/messages/:id', { id }));
    };
 
@@ -39,6 +44,7 @@ function ContactList({ user, reciverId, resetMessages }) {
       );
    };
 
+   // refetch data when new chat is created, users never interact with each other
    useEffect(() => {
       if (!chatList?.length) return;
 
@@ -46,19 +52,18 @@ function ContactList({ user, reciverId, resetMessages }) {
    }, [chatList]);
 
    useEffect(() => {
-      if (!arrivalMessage) return;
-      if (contactList.find((c) => c.members.includes(arrivalMessage.senderId))) return;
-      queryClient.invalidateQueries(['chat-list']);
-   }, [arrivalMessage, contactList]);
-
-   // mark chat as readed
-   useEffect(() => {
-      if (!reciverId) return;
-
-      return () => {
-         updateChat(reciverId);
-      };
-   }, [reciverId]);
+      if (!arrivalMessage || !chatList) return;
+      if (
+         chatList.find(
+            (c) => c.members.includes(arrivalMessage.senderId) && c.members.includes(arrivalMessage.reciverId)
+         )
+      )
+         return;
+      setTimeout(() => {
+         queryClient.invalidateQueries(['chat-list']);
+         queryClient.invalidateQueries(['user']);
+      }, 2000);
+   }, [arrivalMessage]);
 
    return (
       <aside className='flex flex-col items-start overflow-auto border-r border-r-primary-grey/70 sm:w-96 w-[6.5rem] relative px-2'>

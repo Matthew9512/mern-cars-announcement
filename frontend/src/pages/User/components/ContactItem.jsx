@@ -4,7 +4,9 @@ import { useScreen } from '../../../api/useScreen';
 import Avatar from './Avatar';
 
 function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, arrivalMessage }) {
-   const [styleNewMessage, setStyleNewMessage] = useState(false);
+   const [styleNewMessage, setStyleNewMessage] = useState(() => {
+      return user?.unseenChats.includes(chat?._id) ? true : false;
+   });
    const dimension = useScreen(arrivalMessage);
    const contactData = useMemo(() => contactItemData(user, chat, arrivalMessage), [user, chat, arrivalMessage]);
 
@@ -16,15 +18,17 @@ function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, ar
    }, [arrivalMessage]);
 
    useEffect(() => {
-      !chat?.reciverSeen && chat?.reciverId === user?._id ? setStyleNewMessage(true) : setStyleNewMessage(false);
-   }, [chat, user?._id]);
+      if (!user) return;
+      user?.unseenChats.includes(chat?._id) ? setStyleNewMessage(true) : setStyleNewMessage(false);
+   }, [user]);
 
    return (
       <div
-         onClick={() => handleCurrentChat(setStyleNewMessage, chat?.members)}
+         onClick={(e) => handleCurrentChat(e, setStyleNewMessage, chat)}
          className={`${
             chat?.members.includes(reciverId) ? 'border-l-4 border-l-primary-blue' : ''
          } w-full flex items-start gap-2 p-2 hover:bg-primary-white hover:cursor-pointer`}
+         data-unread={styleNewMessage}
       >
          <Avatar
             user={user}
@@ -34,7 +38,7 @@ function ContactItem({ chat, handleCurrentChat, reciverId, user, onlineUsers, ar
             styleNewMessage={styleNewMessage}
             dimension={dimension}
          />
-         <div className={`${styleNewMessage && 'font-bold'} sm:flex flex-col w-full hidden justify-between`}>
+         <div className={`${styleNewMessage ? 'font-bold' : ''} sm:flex flex-col w-full hidden justify-between`}>
             <div className='flex justify-between'>
                <p className='first-letter:uppercase text-lg'>{contactData?.username}</p>
                <span className='text-xs text-right truncate italic pr-1'>

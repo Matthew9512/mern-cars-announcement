@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const usersModel = require('../models/usersModel');
 const carsModel = require('../models/carsModel');
-const chatModel = require('../models/chatsModel');
 const bcrypt = require('bcrypt');
 
 // create random hex color for chat avatar
@@ -73,9 +72,9 @@ const login = async function (req, res, next) {
 const logout = (req, res) => {
    const cookies = req.cookies;
 
-   if (!cookies?.jwt) return res.sendStatus(204);
+   if (!cookies?.jwtCar) return res.sendStatus(204);
 
-   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+   res.clearCookie('jwtCar', { httpOnly: true, sameSite: 'None', secure: true });
 
    res.status(200).json({ message: `Logout successful` });
 };
@@ -88,7 +87,7 @@ const deleteAcc = async function (req, res, next) {
 
       if (!user) return res.status(404).json({ message: `User not found` });
 
-      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+      res.clearCookie('jwtCar', { httpOnly: true, sameSite: 'None', secure: true });
 
       res.status(200).json({ message: `Account successfully deleted` });
    } catch (error) {
@@ -129,10 +128,8 @@ const getUser = async function (req, res, next) {
       const { id } = req.params;
 
       const user = await usersModel.findById(id).select('-password');
-      const unseenChats = (await chatModel.find({ members: { $in: [user?._id] }, reciverId: id, reciverSeen: false }))
-         .length;
 
-      res.status(200).json({ user, unseenChats });
+      res.status(200).json({ user });
    } catch (error) {
       next(error.message);
       console.log(error.message);

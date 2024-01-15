@@ -10,8 +10,8 @@ const usersSchema = new schema({
    contactPerson: String,
    telNumber: String,
    announcements: [String],
-   seenChats: Boolean,
    usersAvatar: String,
+   unseenChats: [String],
 });
 
 module.exports = mongoose.model('user', usersSchema);

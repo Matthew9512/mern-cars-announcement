@@ -5,7 +5,7 @@ function Message({ msg, user, chatMembers }) {
    const usersAvatar = msg?.senderId === user?._id ? user.usersAvatar : chatMembers.reciversAvatar;
 
    return (
-      <div className={`flex my-2 ${msg?.senderId === user?._id ? 'justify-end' : 'justify-start'} `}>
+      <div className={`flex my-2 ${msg?.senderId === user?._id ? 'justify-end' : 'justify-start'}`} id={msg._id}>
          <div className={`grid grid-cols-[2rem,1fr] max-w-[80%] gap-2 place-items-start`}>
             <div
                className='h-8 w-8 rounded-full flex-center uppercase'

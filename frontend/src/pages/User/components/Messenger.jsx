@@ -23,7 +23,7 @@ function Messenger() {
    return (
       <section className='bg-secondary-white pt-4 relative'>
          <UsersNavbar />
-         <article className='lg:w-4/5 w-full h-[75vh] mx-auto flex '>
+         <article className='lg:w-4/5 w-full h-[75vh] mx-auto flex'>
             <ContactList reciverId={id} user={user} resetMessages={resetMessages} />
             <div className='relative px-2 w-full'>
                <Conversation

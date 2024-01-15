@@ -56,15 +56,17 @@ function MessagesForm({ socket, user, reciverId, messages, setMessages }) {
          message: newMsg,
       });
 
+      formRef.current.value = '';
+      setDisabledSendBtn(false);
+
+      if (!messages.length) return;
+
       setMessages((prev) =>
          [
             ...prev,
             { message: newMsg, created: new Date(Date.now()).toISOString(), senderId: user?._id, _id: uuidv4() },
          ].sort((a, b) => (a.created > b.created ? -1 : b.created > a.created ? 1 : 0))
       );
-
-      formRef.current.value = '';
-      setDisabledSendBtn(false);
 
       setTimeout(() => {
          let scrollEle = document.querySelector('#scrollEle');

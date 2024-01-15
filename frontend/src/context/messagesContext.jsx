@@ -6,17 +6,20 @@ import { UserContext } from './userContext';
 export const MessagesContext = createContext({});
 
 export const MessagesContextProvider = ({ children }) => {
-   const { user, unseenChats } = useContext(UserContext);
-   let socket = useRef(
-      io('wss://mern-cars-announcement-production.up.railway.app/', {
-         reconnectionAttempts: 2,
-      })
-   );
+   const { user } = useContext(UserContext);
+   let socket = useRef();
    const [newMessageNotifyDot, setNewMessageNotifyDot] = useState(0);
    const [onlineUsers, setOnlineUsers] = useState(null);
    const [arrivalMessage, setArrivalMessage] = useState(null);
 
    useEffect(() => {
+      socket.current = io('wss://mern-cars-announcement-production.up.railway.app/', {
+         reconnectionAttempts: 2,
+      });
+      // socket.current = io('ws://localhost:8000', {
+      //    reconnectionAttempts: 2,
+      // });
+
       socket.current.on('getMessage', (data) => {
          const id = window.location.pathname;
 
@@ -37,7 +40,6 @@ export const MessagesContextProvider = ({ children }) => {
 
    useEffect(() => {
       if (!user) return;
-
       socket.current.emit('addUser', user?._id);
       socket.current.on('getUsers', (users) => {
          setOnlineUsers(users.filter((u) => u.userId !== user?._id));
@@ -46,9 +48,8 @@ export const MessagesContextProvider = ({ children }) => {
 
    useEffect(() => {
       if (!user) return;
-
-      setNewMessageNotifyDot(unseenChats);
-   }, [user, unseenChats]);
+      setNewMessageNotifyDot(user?.unseenChats.length);
+   }, [user]);
 
    return (
       <MessagesContext.Provider

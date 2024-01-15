@@ -59,7 +59,7 @@ const createNewMessage = async function (req, res, next) {
 
       await chatModel.findOneAndUpdate(
          { members: { $all: [senderId, reciverId] } },
-         { lastSender: lastSender?.username, lastMessage: message, reciverId, created: new Date(), reciverSeen: false }
+         { lastSender: lastSender?.username, lastMessage: message, reciverId, created: new Date() }
       );
 
       res.sendStatus(200);
