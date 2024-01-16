@@ -16,9 +16,6 @@ export const MessagesContextProvider = ({ children }) => {
       socket.current = io('wss://mern-cars-announcement-production.up.railway.app/', {
          reconnectionAttempts: 2,
       });
-      // socket.current = io('ws://localhost:8000', {
-      //    reconnectionAttempts: 2,
-      // });
 
       socket.current.on('getMessage', (data) => {
          const id = window.location.pathname;

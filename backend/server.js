@@ -5,6 +5,7 @@ const compression = require('compression');
 const io = require('socket.io');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { v4: uuidv4 } = require('uuid');
 
 const corsOptions = require('./config/corsOptions');
 const connectDB = require('./config/mongoDbCon');
@@ -38,7 +39,6 @@ const expressServer = app.listen(PORT, () => {
 
 const socketServer = new io.Server(expressServer, {
    cors: {
-      // origin: 'http://127.0.0.1:5173',
       origin: 'https://justcars.vercel.app',
    },
 });
@@ -60,8 +60,7 @@ const getUser = (userId) => {
 
 const saveCurrentChat = (userId, chatId) => {
    usersCurrentChat = usersCurrentChat.filter((user) => user.userId != userId);
-   usersCurrentChat.push({ userId, chatId: chatId?.id });
-   console.log(usersCurrentChat);
+   usersCurrentChat.push({ userId, chatId });
 };
 
 socketServer.on('connection', (socket) => {
@@ -74,7 +73,8 @@ socketServer.on('connection', (socket) => {
    // users current chat
    socket.on('currentChat', async ({ userId, reciverId }) => {
       const chatId = await chatModel.findOne({ members: { $all: [userId, reciverId] } }).select('_id');
-      saveCurrentChat(userId, chatId);
+      if (!chatId) return saveCurrentChat(userId, uuidv4());
+      saveCurrentChat(userId, chatId?._id);
    });
 
    // send typing message
@@ -88,7 +88,10 @@ socketServer.on('connection', (socket) => {
       const reciversChat = usersCurrentChat.find((user) => user.userId === reciverId);
       const sendersChat = usersCurrentChat.find((user) => user.userId === senderId);
 
-      if (reciversChat?.chatId !== sendersChat?.chatId) {
+      if (!reciversChat) {
+         await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: sendersChat?.chatId } });
+      }
+      if (reciversChat?.chatId.toString() !== sendersChat?.chatId.toString()) {
          await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: sendersChat?.chatId } });
       }
 

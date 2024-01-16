@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useRef } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../../../ui/LoadingSpinner';
 import Message from './Message';
 import ConversationHomeScreen from './ConversationHomeScreen';
@@ -10,12 +9,11 @@ import { chatMembersData } from '../../../utils/helpers';
 import StartOfChat from './StartOfChat';
 
 function Conversation({ reciverId, user, messages, setMessages, page, setPage }) {
-   const { arrivalMessage, socket } = useContext(MessagesContext);
+   const { arrivalMessage } = useContext(MessagesContext);
    const infScrollEle = useRef(null);
    const isOnScreen = useOnScreen(infScrollEle);
    const { currentChatMsg, isGetChatMsgPending } = useGetChatMsg(reciverId, user?._id, page);
    const chatMembers = useMemo(() => chatMembersData(currentChatMsg, user), [currentChatMsg, user]);
-   const queryClient = useQueryClient();
 
    // display old messages
    useEffect(() => {
@@ -43,15 +41,6 @@ function Conversation({ reciverId, user, messages, setMessages, page, setPage })
 
       setPage((prev) => prev + 1);
    }, [isOnScreen]);
-
-   // users current chat
-   useEffect(() => {
-      socket.current.emit('currentChat', { userId: user?._id, reciverId });
-
-      return () => {
-         queryClient.invalidateQueries(['user']);
-      };
-   }, [reciverId]);
 
    return (
       <>
