@@ -88,19 +88,20 @@ socketServer.on('connection', (socket) => {
       const reciversChat = usersCurrentChat.find((user) => user.userId === reciverId);
       const sendersChat = usersCurrentChat.find((user) => user.userId === senderId);
 
-      if (!reciversChat) {
-         await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: sendersChat?.chatId } });
-      }
-      if (reciversChat?.chatId.toString() !== sendersChat?.chatId.toString()) {
-         await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: sendersChat?.chatId } });
-      }
-
       socketServer.to(user?.socketId).emit('getMessage', {
          senderId,
          message,
          reciverId,
-         chatId: sendersChat?.chatId,
+         // chatId: sendersChat?.chatId,
       });
+
+      if (!sendersChat?.chatId.toString().match(/^[0-9a-fA-F]{24}$/)) {
+         return await newChatData(senderId, reciverId, 3);
+      }
+
+      if (reciversChat?.chatId.toString() !== sendersChat?.chatId.toString()) {
+         await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: sendersChat?.chatId } });
+      }
    });
 
    //when disconnect
@@ -110,3 +111,22 @@ socketServer.on('connection', (socket) => {
       usersCurrentChat = usersCurrentChat.filter((user) => user.userId !== userId);
    });
 });
+
+// refetch for new chat data
+async function newChatData(senderId, reciverId, maxAttempts = 3, currentAttempt = 1) {
+   try {
+      if (currentAttempt > maxAttempts) return;
+      const chatId = await chatModel.findOne({ members: { $all: [senderId, reciverId] } }).select('_id');
+
+      if (!chatId) {
+         await new Promise((resolve) => setTimeout(resolve, 2000));
+
+         await newChatData(senderId, reciverId, maxAttempts, currentAttempt + 1);
+      } else if (chatId) {
+         saveCurrentChat(senderId, chatId._id);
+         await usersModel.findByIdAndUpdate(reciverId, { $push: { unseenChats: chatId?._id } });
+      }
+   } catch (error) {
+      console.error('Error fetching data:', error);
+   }
+}

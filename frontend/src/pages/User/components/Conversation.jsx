@@ -21,7 +21,9 @@ function Conversation({ reciverId, user, messages, setMessages, page, setPage })
 
       setMessages((prev) => {
          const uniqueMessages = new Map([...prev, ...currentChatMsg.find].map((msg) => [msg._id, msg]));
-         return [...uniqueMessages.values()];
+         return [...uniqueMessages.values()].sort((a, b) =>
+            a.created > b.created ? -1 : b.created > a.created ? 1 : 0
+         );
       });
    }, [currentChatMsg]);
 

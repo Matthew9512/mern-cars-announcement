@@ -59,10 +59,12 @@ function ContactList({ user, reciverId, resetMessages }) {
          )
       )
          return;
-      setTimeout(() => {
-         queryClient.invalidateQueries(['chat-list']);
-         queryClient.invalidateQueries(['user']);
-      }, 2000);
+      else {
+         setTimeout(() => {
+            queryClient.invalidateQueries(['chat-list']);
+            queryClient.invalidateQueries(['user']);
+         }, 2000);
+      }
    }, [arrivalMessage]);
 
    return (
