@@ -8,9 +8,6 @@ function Footer() {
             <span className='text-xl'>
                <a href='https://github.com/Matthew9512'>{githubIcon}</a>
             </span>
-            <span className='text-xl'>
-               <a href='https://www.linkedin.com/in/mateusz-maciak/'>{linkedInIcon}</a>
-            </span>
          </p>
       </footer>
    );
